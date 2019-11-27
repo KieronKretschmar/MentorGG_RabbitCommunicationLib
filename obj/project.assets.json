@@ -253,11 +253,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lasse\\source\\repos\\DemoCentralMock\\RabbitTransfer\\RabbitTransfer.csproj",
+      "projectUniqueName": "C:\\Users\\Lasse\\source\\repos\\RabbitTransfer\\RabbitTransfer.csproj",
       "projectName": "RabbitTransfer",
-      "projectPath": "C:\\Users\\Lasse\\source\\repos\\DemoCentralMock\\RabbitTransfer\\RabbitTransfer.csproj",
+      "projectPath": "C:\\Users\\Lasse\\source\\repos\\RabbitTransfer\\RabbitTransfer.csproj",
       "packagesPath": "C:\\Users\\Lasse\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lasse\\source\\repos\\DemoCentralMock\\RabbitTransfer\\obj\\",
+      "outputPath": "C:\\Users\\Lasse\\source\\repos\\RabbitTransfer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
