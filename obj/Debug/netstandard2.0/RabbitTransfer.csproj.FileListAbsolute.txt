@@ -1,0 +1,8 @@
+C:\Users\Lasse\source\repos\DemoCentralMock\RabbitTransfer\bin\Debug\netstandard2.0\RabbitTransfer.deps.json
+C:\Users\Lasse\source\repos\DemoCentralMock\RabbitTransfer\bin\Debug\netstandard2.0\RabbitTransfer.dll
+C:\Users\Lasse\source\repos\DemoCentralMock\RabbitTransfer\obj\Debug\netstandard2.0\RabbitTransfer.csprojAssemblyReference.cache
+C:\Users\Lasse\source\repos\DemoCentralMock\RabbitTransfer\obj\Debug\netstandard2.0\RabbitTransfer.AssemblyInfoInputs.cache
+C:\Users\Lasse\source\repos\DemoCentralMock\RabbitTransfer\obj\Debug\netstandard2.0\RabbitTransfer.AssemblyInfo.cs
+C:\Users\Lasse\source\repos\DemoCentralMock\RabbitTransfer\bin\Debug\netstandard2.0\RabbitTransfer.pdb
+C:\Users\Lasse\source\repos\DemoCentralMock\RabbitTransfer\obj\Debug\netstandard2.0\RabbitTransfer.dll
+C:\Users\Lasse\source\repos\DemoCentralMock\RabbitTransfer\obj\Debug\netstandard2.0\RabbitTransfer.pdb
