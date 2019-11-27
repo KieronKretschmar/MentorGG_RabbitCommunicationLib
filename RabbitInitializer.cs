@@ -19,7 +19,19 @@ namespace RabbitTransfer
             List<string> allQueues = RPCExchange.EXCHANGES.SelectMany(x => x.Queues).ToList();
             foreach (string Queue in allQueues)
             {
-                channel.QueueDeclare(queue:Queue,durable:false,exclusive:false,autoDelete:false);
+                channel.QueueDeclare(queue: Queue, durable: false, exclusive: false, autoDelete: false);
+            }
+        }
+
+        /// <summary>
+        /// Declares a queue by creating a new channel and using this to create the queue
+        /// </summary>
+        /// <param name="name">name of the queue</param>
+        public static void DeclareQueue(string name)
+        {
+            using (var channel = GetNewConnection().CreateModel())
+            {
+                channel.QueueDeclare(queue: name, durable: false, exclusive: false, autoDelete: false);
             }
         }
 

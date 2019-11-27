@@ -31,6 +31,7 @@ namespace RabbitTransfer
         {
             _connection = RabbitInitializer.GetNewConnection();
             var channel = _connection.CreateModel();
+            channel.QueueDeclare(queue: QUEUE_NAME, durable: false, exclusive: false, autoDelete: false);
 
             var consumer = new EventingBasicConsumer(channel);
 
