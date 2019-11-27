@@ -4,64 +4,67 @@ using RabbitTransfer;
 using System;
 using System.Text;
 
-/// <summary>
-/// An abstract of a RPC server
-/// You only need to specify which Queue to listen to, and what to do once a message is received
-/// </summary>
-public abstract class AbstractRPCServer
+namespace RabbitTransfer
 {
     /// <summary>
-    /// Queue to listen to
+    /// An abstract of a RPC server
+    /// You only need to specify which Queue to listen to, and what to do once a message is received
     /// </summary>
-    public abstract string QUEUE_NAME
+    public abstract class AbstractRPCServer
     {
-        get;
-    }
-
-    private readonly IConnection _connection;
-
-    /// <summary>
-    /// Set up the communication handling basics
-    /// CorrelationId gets automatically parsed
-    /// Messages get automatically acknowledged and the response published
-    /// </summary>
-    protected AbstractRPCServer()
-    {
-        _connection = RabbitInitializer.GetNewConnection();
-        var channel = _connection.CreateModel();
-
-        var consumer = new EventingBasicConsumer(channel);
-
-        consumer.Received += (model, ea) =>
+        /// <summary>
+        /// Queue to listen to
+        /// </summary>
+        public abstract string QUEUE_NAME
         {
-            var response = ea.Body;
-            int demoId = int.Parse(ea.BasicProperties.CorrelationId);
-            var props = ea.BasicProperties;
-            var replyProps = channel.CreateBasicProperties();
-            replyProps.CorrelationId = props.CorrelationId;
+            get;
+        }
 
-            byte[] responseBytes = OnMessageReceived(demoId, response);
+        private readonly IConnection _connection;
 
-            Console.WriteLine("MessageReceived got called and finished");
+        /// <summary>
+        /// Set up the communication handling basics
+        /// CorrelationId gets automatically parsed
+        /// Messages get automatically acknowledged and the response published
+        /// </summary>
+        protected AbstractRPCServer()
+        {
+            _connection = RabbitInitializer.GetNewConnection();
+            var channel = _connection.CreateModel();
 
-            channel.BasicPublish(exchange: "", routingKey: props.ReplyTo, basicProperties: replyProps, body: responseBytes);
-            channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
-        };
+            var consumer = new EventingBasicConsumer(channel);
 
-        channel.BasicConsume(queue: QUEUE_NAME,
-        autoAck: false,
-        consumer: consumer);
+            consumer.Received += (model, ea) =>
+            {
+                var response = ea.Body;
+                int demoId = int.Parse(ea.BasicProperties.CorrelationId);
+                var props = ea.BasicProperties;
+                var replyProps = channel.CreateBasicProperties();
+                replyProps.CorrelationId = props.CorrelationId;
+
+                byte[] responseBytes = OnMessageReceived(demoId, response);
+
+                Console.WriteLine("MessageReceived got called and finished");
+
+                channel.BasicPublish(exchange: "", routingKey: props.ReplyTo, basicProperties: replyProps, body: responseBytes);
+                channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+            };
+
+            channel.BasicConsume(queue: QUEUE_NAME,
+            autoAck: false,
+            consumer: consumer);
+
+        }
+
+        /// <summary>
+        /// Handle the event if a message is received
+        /// There is no guarantee on the model used in the message bytes
+        /// You do not need to send out the response, just return its byte[] (JSON, utf8 encoded)
+        /// </summary>
+        /// <param name="demoId">id of the demo</param>
+        /// <param name="response">byte [] of the received message</param>
+        /// <returns>byte[] to send back</returns>
+        protected abstract byte[] OnMessageReceived(int demoId, byte[] response);
 
     }
-
-    /// <summary>
-    /// Handle the event if a message is received
-    /// There is no guarantee on the model used in the message bytes
-    /// You do not need to send out the response, just return its byte[] (JSON, utf8 encoded)
-    /// </summary>
-    /// <param name="demoId">id of the demo</param>
-    /// <param name="response">byte [] of the received message</param>
-    /// <returns>byte[] to send back</returns>
-    protected abstract byte[] OnMessageReceived(int demoId, byte[] response);
-
 }
