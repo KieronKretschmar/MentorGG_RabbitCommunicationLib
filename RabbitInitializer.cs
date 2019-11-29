@@ -69,6 +69,7 @@ namespace RabbitTransfer
         public static readonly RPCExchange DC_DFW = new RPCExchange("DC2DFW", "DFW2DC");
         public static readonly RPCExchange DC_DFW_HASH = new RPCExchange("DFW2DC_HASH", "DC2DFW_HASH");
         public static readonly RPCExchange DC_MP = new RPCExchange("DC2MP", "MP2DC");
+        public static readonly RPCExchange DC_DD = new RPCExchange("DC2DD", "DD2DC");
 
         /// <summary>
         /// List of all the known exchanges
@@ -81,7 +82,7 @@ namespace RabbitTransfer
                 //ADD NEW RPC EXCHANGES HERE
                 return new List<RPCExchange>
                 {
-                    DC_DFW,DC_DFW_HASH,DC_MP,
+                    DC_DFW,DC_DFW_HASH,DC_MP,DC_DD
                 };
             }
         }

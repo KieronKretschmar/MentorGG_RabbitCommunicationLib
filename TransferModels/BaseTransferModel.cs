@@ -2,7 +2,7 @@
 
 public class BaseTransferModel
 {
-    public int DemoId { get; set; }
+    public long matchId { get; set; }
 
     public string ToJSON()
     {
