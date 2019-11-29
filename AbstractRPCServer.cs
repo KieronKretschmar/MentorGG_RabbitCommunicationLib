@@ -38,14 +38,12 @@ namespace RabbitTransfer
             consumer.Received += (model, ea) =>
             {
                 var response = ea.Body;
-                int demoId = int.Parse(ea.BasicProperties.CorrelationId);
+                long matchId = long.Parse(ea.BasicProperties.CorrelationId);
                 var props = ea.BasicProperties;
                 var replyProps = channel.CreateBasicProperties();
                 replyProps.CorrelationId = props.CorrelationId;
 
-                byte[] responseBytes = OnMessageReceived(demoId, response);
-
-                Console.WriteLine("MessageReceived got called and finished");
+                byte[] responseBytes = OnMessageReceived(matchId, response);
 
                 channel.BasicPublish(exchange: "", routingKey: props.ReplyTo, basicProperties: replyProps, body: responseBytes);
                 channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
@@ -62,10 +60,10 @@ namespace RabbitTransfer
         /// There is no guarantee on the model used in the message bytes
         /// You do not need to send out the response, just return its byte[] (JSON, utf8 encoded)
         /// </summary>
-        /// <param name="demoId">id of the demo</param>
+        /// <param name="matchId">id of the demo</param>
         /// <param name="response">byte [] of the received message</param>
         /// <returns>byte[] to send back</returns>
-        protected abstract byte[] OnMessageReceived(int demoId, byte[] response);
+        protected abstract byte[] OnMessageReceived(long matchId, byte[] response);
 
     }
 }
