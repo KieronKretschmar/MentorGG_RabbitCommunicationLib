@@ -13,7 +13,7 @@ namespace RabbitTransfer
         /// Sets up all the queues mentioning in the RPCExchange static property Exchanges
         /// </summary>
         /// <seealso cref="RPCExchange.EXCHANGES"/>
-        public static void SetUpQueues()
+        public static void SetUpRPC()
         {
             var channel = GetNewConnection().CreateModel();
             List<string> allQueues = RPCExchange.EXCHANGES.SelectMany(x => x.Queues).ToList();

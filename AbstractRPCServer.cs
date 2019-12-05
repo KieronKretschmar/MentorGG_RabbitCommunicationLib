@@ -1,8 +1,5 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using RabbitTransfer;
-using System;
-using System.Text;
 
 namespace RabbitTransfer
 {

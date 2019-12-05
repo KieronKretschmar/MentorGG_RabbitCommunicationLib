@@ -71,6 +71,7 @@ namespace RabbitTransfer
 
             _callbackMapper.TryAdd(correlationId, tcs);
 
+
             _channel.BasicPublish(
                 exchange: "",
                 routingKey: QUEUE_NAME,
