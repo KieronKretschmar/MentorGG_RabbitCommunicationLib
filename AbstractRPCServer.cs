@@ -1,5 +1,6 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System;
 
 namespace RabbitTransfer
 {
@@ -7,7 +8,7 @@ namespace RabbitTransfer
     /// An abstract of a RPC server
     /// You only need to specify which Queue to listen to, and what to do once a message is received
     /// </summary>
-    public abstract class AbstractRPCServer
+    public abstract class AbstractRPCServer : IDisposable
     {
         /// <summary>
         /// Queue to listen to
@@ -62,5 +63,13 @@ namespace RabbitTransfer
         /// <returns>byte[] to send back</returns>
         protected abstract byte[] OnMessageReceived(long matchId, byte[] response);
 
+
+        /// <summary>
+        /// Closes the connection.
+        /// </summary>
+        public void Dispose()
+        {
+            _connection.Close();
+        }
     }
 }
