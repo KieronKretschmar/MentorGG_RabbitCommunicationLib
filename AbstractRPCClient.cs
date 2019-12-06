@@ -61,13 +61,14 @@ namespace RabbitTransfer
         /// <param name="demoModel">byte[] of the transfer model</param>
         /// <param name="matchId">id of the match </param>
         /// <returns>async task to await, result is return model</returns>
-        public Task<T> SendNewDemo(byte[] demoModel, long matchId, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<T> SendNewDemo(string demoModel, long matchId, CancellationToken cancellationToken = default(CancellationToken))
         {
+
             IBasicProperties props = _channel.CreateBasicProperties();
             var correlationId = matchId.ToString();
             props.CorrelationId = correlationId;
             props.ReplyTo = REPLY_QUEUE;
-            var messageBytes = demoModel;
+            var messageBytes = Encoding.UTF8.GetBytes(demoModel);
             var tcs = new TaskCompletionSource<T>();
 
             _callbackMapper.TryAdd(correlationId, tcs);

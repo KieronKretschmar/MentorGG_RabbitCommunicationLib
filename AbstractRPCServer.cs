@@ -41,7 +41,10 @@ namespace RabbitTransfer
                 var replyProps = channel.CreateBasicProperties();
                 replyProps.CorrelationId = props.CorrelationId;
 
-                byte[] responseBytes = OnMessageReceived(matchId, response);
+                string responseModel= OnMessageReceived(matchId, response);
+
+                byte[] responseBytes = System.Text.Encoding.UTF8.GetBytes(responseModel);
+
 
                 channel.BasicPublish(exchange: "", routingKey: props.ReplyTo, basicProperties: replyProps, body: responseBytes);
                 channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
@@ -61,7 +64,7 @@ namespace RabbitTransfer
         /// <param name="matchId">id of the demo</param>
         /// <param name="response">byte [] of the received message</param>
         /// <returns>byte[] to send back</returns>
-        protected abstract byte[] OnMessageReceived(long matchId, byte[] response);
+        protected abstract string OnMessageReceived(long matchId, byte[] response);
 
 
         /// <summary>
