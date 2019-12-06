@@ -58,7 +58,7 @@ namespace RabbitTransfer
         /// <summary>
         /// Send a demo to the queue, demo is the first parameter
         /// </summary>
-        /// <param name="demoModel">byte[] of the transfer model</param>
+        /// <param name="demoModel">the transfer model</param>
         /// <param name="matchId">id of the match </param>
         /// <returns>async task to await, result is return model</returns>
         public Task<T> SendNewDemo(long matchId, string demoModel, CancellationToken cancellationToken = default(CancellationToken))

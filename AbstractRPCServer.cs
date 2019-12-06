@@ -41,7 +41,9 @@ namespace RabbitTransfer
                 var replyProps = channel.CreateBasicProperties();
                 replyProps.CorrelationId = props.CorrelationId;
 
-                string responseModel= OnMessageReceived(matchId, response);
+                string utf8decodedResponse = System.Text.Encoding.UTF8.GetString(response);
+
+                string responseModel= OnMessageReceived(matchId, utf8decodedResponse);
 
                 byte[] responseBytes = System.Text.Encoding.UTF8.GetBytes(responseModel);
 
@@ -64,7 +66,7 @@ namespace RabbitTransfer
         /// <param name="matchId">id of the demo</param>
         /// <param name="response">byte [] of the received message</param>
         /// <returns>string to send back</returns>
-        protected abstract string OnMessageReceived(long matchId, byte[] response);
+        protected abstract string OnMessageReceived(long matchId, string response);
 
 
         /// <summary>
