@@ -5,7 +5,6 @@ using System.Text;
 
 public class DFW2DCModel : AnalyzerTransferModel
 {
-    public bool Downloaded { get; set; } = false;
     public bool Unzipped { get; set; } = false;
     public bool DuplicateChecked { get; set; } = false;
     public bool IsDuplicate { get; set; } = false;
