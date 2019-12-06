@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System;
 using System.Collections.Concurrent;
 using System.Text;
 using System.Threading;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RabbitTransfer
 {
-    public abstract class AbstractRPCClient<T>
+    public abstract class AbstractRPCClient<T> : IDisposable
     {
         public abstract string QUEUE_NAME { get; }
         public abstract string REPLY_QUEUE { get; }
@@ -91,7 +92,10 @@ namespace RabbitTransfer
         /// <param name="response">model of the response</param>
         public abstract void HandleReplyQueue(long matchId, T response);
 
-        public void Close()
+        /// <summary>
+        /// Closes the connection.
+        /// </summary>
+        public void Dispose()
         {
             _connection.Close();
         }
