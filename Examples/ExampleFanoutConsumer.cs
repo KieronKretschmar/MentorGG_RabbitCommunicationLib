@@ -17,7 +17,7 @@ namespace RabbitTransfer.Examples
             using (var channel = connection.CreateModel())
             {
                 //SPECIFY YOUR EXCHANGE TYPE
-                channel.ExchangeDeclare(exchange: "EXCHANGE NAME", ExchangeType.Direct);
+                channel.ExchangeDeclare(exchange: "EXCHANGE NAME", ExchangeType.Fanout);
 
                 channel.QueueDeclare(queue: QUEUE_NAME, durable: false, exclusive: false, autoDelete: false);
                 var consumer = new EventingBasicConsumer(channel);
