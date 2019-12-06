@@ -63,7 +63,7 @@ namespace RabbitTransfer
         /// </summary>
         /// <param name="matchId">id of the demo</param>
         /// <param name="response">byte [] of the received message</param>
-        /// <returns>byte[] to send back</returns>
+        /// <returns>string to send back</returns>
         protected abstract string OnMessageReceived(long matchId, byte[] response);
 
 

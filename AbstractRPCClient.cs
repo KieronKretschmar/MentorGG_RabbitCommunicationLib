@@ -61,7 +61,7 @@ namespace RabbitTransfer
         /// <param name="demoModel">byte[] of the transfer model</param>
         /// <param name="matchId">id of the match </param>
         /// <returns>async task to await, result is return model</returns>
-        public Task<T> SendNewDemo(string demoModel, long matchId, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<T> SendNewDemo(long matchId, string demoModel, CancellationToken cancellationToken = default(CancellationToken))
         {
 
             IBasicProperties props = _channel.CreateBasicProperties();
