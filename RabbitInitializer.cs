@@ -13,13 +13,25 @@ namespace RabbitTransfer
         /// Sets up all the queues mentioning in the RPCExchange static property Exchanges
         /// </summary>
         /// <seealso cref="RPCExchange.EXCHANGES"/>
-        public static void SetUpQueues()
+        public static void SetUpRPC()
         {
             var channel = GetNewConnection().CreateModel();
             List<string> allQueues = RPCExchange.EXCHANGES.SelectMany(x => x.Queues).ToList();
             foreach (string Queue in allQueues)
             {
-                channel.QueueDeclare(queue:Queue,durable:false,exclusive:false,autoDelete:false);
+                channel.QueueDeclare(queue: Queue, durable: false, exclusive: false, autoDelete: false);
+            }
+        }
+
+        /// <summary>
+        /// Declares a queue by creating a new channel and using this to create the queue
+        /// </summary>
+        /// <param name="name">name of the queue</param>
+        public static void DeclareQueue(string name)
+        {
+            using (var channel = GetNewConnection().CreateModel())
+            {
+                channel.QueueDeclare(queue: name, durable: false, exclusive: false, autoDelete: false);
             }
         }
 
@@ -57,6 +69,7 @@ namespace RabbitTransfer
         public static readonly RPCExchange DC_DFW = new RPCExchange("DC2DFW", "DFW2DC");
         public static readonly RPCExchange DC_DFW_HASH = new RPCExchange("DFW2DC_HASH", "DC2DFW_HASH");
         public static readonly RPCExchange DC_MP = new RPCExchange("DC2MP", "MP2DC");
+        public static readonly RPCExchange DC_DD = new RPCExchange("DC2DD", "DD2DC");
 
         /// <summary>
         /// List of all the known exchanges
@@ -69,7 +82,7 @@ namespace RabbitTransfer
                 //ADD NEW RPC EXCHANGES HERE
                 return new List<RPCExchange>
                 {
-                    DC_DFW,DC_DFW_HASH,DC_MP,
+                    DC_DFW,DC_DFW_HASH,DC_MP,DC_DD
                 };
             }
         }

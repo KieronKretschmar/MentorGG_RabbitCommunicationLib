@@ -19,5 +19,5 @@ public class DC2DFWModel : BaseTransferModel
     public double FramesPerSecond { get; set; }
     public DateTime MatchDate { get; set; }
     public string Event { get; set; }
-
+    public string ZippedFilePath { get; set; }
 }
