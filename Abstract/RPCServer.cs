@@ -2,13 +2,13 @@
 using RabbitMQ.Client.Events;
 using System;
 
-namespace RabbitTransfer
+namespace RabbitTransfer.Abstract
 {
     /// <summary>
     /// An abstract of a RPC server
     /// You only need to specify which Queue to listen to, and what to do once a message is received
     /// </summary>
-    public abstract class AbstractRPCServer : IDisposable
+    public abstract class RPCServer : IDisposable
     {
         /// <summary>
         /// Queue to listen to
@@ -25,7 +25,7 @@ namespace RabbitTransfer
         /// CorrelationId gets automatically parsed
         /// Messages get automatically acknowledged and the response published
         /// </summary>
-        protected AbstractRPCServer()
+        protected RPCServer()
         {
             _connection = RabbitInitializer.GetNewConnection();
             var channel = _connection.CreateModel();
