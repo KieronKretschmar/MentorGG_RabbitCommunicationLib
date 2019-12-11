@@ -77,7 +77,7 @@ namespace RabbitMQ.Abstract
                 multiple: false);
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
             var channel = _connection.CreateModel();
             channel.QueueDeclare(
@@ -95,16 +95,12 @@ namespace RabbitMQ.Abstract
                 queue: QueueName,
                 autoAck: false,
                 consumer: consumer);
-
-            return Task.CompletedTask;
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
             _connection.Close();
             _connection.Dispose();
-
-            return Task.CompletedTask;
         }
     }
 }
