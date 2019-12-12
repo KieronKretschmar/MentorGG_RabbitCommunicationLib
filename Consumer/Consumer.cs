@@ -13,8 +13,9 @@ using static TransferModel;
 namespace RabbitTransfer.Consumer
 {
     /// <summary>
-    /// An Abstract IHostedService RPC Server with managed Start and Stop calls.
+    /// An Abstract IHostedService AMQP Consumer with managed Start and Stop calls.
     /// </summary>
+    /// <typeparam name="TConsumeModel">Tranfer Model to consume.</typeparam>
     public abstract class Consumer<TConsumeModel> : IHostedService where TConsumeModel: ITransferModel
     {
         /// <summary>
@@ -36,17 +37,16 @@ namespace RabbitTransfer.Consumer
         /// <summary>
         /// Set the AMQP Connection.
         /// </summary>
-        /// <param name="connection"></param>
         protected Consumer(IQueueConnection queueConnection)
         {
             _queueConnection = queueConnection;
         }
 
         /// <summary>
-        /// Abstract method to handle a message.
+        /// Abstract method to handle a Transfer Model.
         /// </summary>
-        /// <param name="matchId">ID of the Match</param>
-        /// <param name="message">Received message</param>
+        /// <param name="properties">AMQP Properties</param>
+        /// <param name="model">Received message</param>
         protected abstract void HandleMessage(IBasicProperties properties, TConsumeModel model);
 
 
