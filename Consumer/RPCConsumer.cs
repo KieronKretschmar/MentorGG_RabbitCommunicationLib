@@ -1,6 +1,7 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitTransfer.Interfaces;
+using RabbitTransfer.Producer;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,10 +18,15 @@ namespace RabbitTransfer.Consumer
         where TConsumeModel: ITransferModel
         where TProduceModel: ITransferModel
     {
+        public Producer<TProduceModel> Producer { get; }
+
         /// <summary>
         /// Set the AMQP Connection.
         /// </summary>
-        public RPCConsumer(IQueueConnection queueConnection) : base(queueConnection) { }
+        public RPCConsumer(IQueueConnection queueConnection) : base(queueConnection)
+        {
+            Producer = new Producer<TProduceModel>(queueConnection);
+        }
 
         /// <summary>
         /// Handle the event if a Rabbit consumer receives a message.
@@ -41,15 +47,7 @@ namespace RabbitTransfer.Consumer
 
             // Publish reply message
 
-            byte[] responseBytes = replyModel.ToBytes();
-            var replyProps = channel.CreateBasicProperties();
-            replyProps.CorrelationId = ea.BasicProperties.CorrelationId;
-
-            channel.BasicPublish(
-                exchange: "",
-                routingKey: ea.BasicProperties.ReplyTo,
-                basicProperties: replyProps,
-                body: responseBytes);
+            Producer.PublishMessage(ea.BasicProperties.CorrelationId, replyModel);
         }
 
         /// <summary>

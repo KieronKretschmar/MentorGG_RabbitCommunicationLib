@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RabbitTransfer.Producer
 {
-    public abstract class Producer<TProduceModel> : IHostedService
+    public class Producer<TProduceModel> : IHostedService
         where TProduceModel: ITransferModel
     {
         /// <summary>
@@ -26,12 +26,12 @@ namespace RabbitTransfer.Producer
         /// Set the AMQP Connection.
         /// </summary>
         /// <param name="connection"></param>
-        protected Producer(IQueueConnection queueConnection)
+        public Producer(IQueueConnection queueConnection)
         {
             _queueConnection = queueConnection;
         }
 
-        public async Task PublishMessageAsync(string correlationId, TProduceModel produceModel)
+        public void PublishMessage(string correlationId, TProduceModel produceModel)
         {
             IBasicProperties props = channel.CreateBasicProperties();
             props.CorrelationId = correlationId;
@@ -43,8 +43,6 @@ namespace RabbitTransfer.Producer
                 routingKey: _queueConnection.QueueName,
                 basicProperties: props,
                 body: messageBody);
-
-            await Task.CompletedTask;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
