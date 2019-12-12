@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-public class DC2DFWModel : BaseTransferModel
+public class DC2DFWModel : TransferModel
 {
     public DC2DFWModel(DC2DFWModel original)
     {

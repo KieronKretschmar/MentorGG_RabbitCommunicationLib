@@ -1,4 +1,4 @@
-﻿public class AnalyzerTransferModel : BaseTransferModel
+﻿public class AnalyzerTransferModel : TransferModel
 {
     public bool Success { get; set; }
 

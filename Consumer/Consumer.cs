@@ -8,13 +8,14 @@ using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static TransferModel;
 
 namespace RabbitTransfer.Consumer
 {
     /// <summary>
     /// An Abstract IHostedService RPC Server with managed Start and Stop calls.
     /// </summary>
-    public abstract class Consumer : IHostedService
+    public abstract class Consumer<TConsumeModel> : IHostedService where TConsumeModel: ITransferModel
     {
         /// <summary>
         /// Connection to the AMQP Rabbit Instance.
@@ -46,7 +47,7 @@ namespace RabbitTransfer.Consumer
         /// </summary>
         /// <param name="matchId">ID of the Match</param>
         /// <param name="message">Received message</param>
-        protected abstract void HandleMessage(IBasicProperties properties, string message);
+        protected abstract void HandleMessage(IBasicProperties properties, TConsumeModel model);
 
 
         /// <summary>
@@ -60,7 +61,7 @@ namespace RabbitTransfer.Consumer
 
             HandleMessage(
                 ea.BasicProperties,
-                Encoding.UTF8.GetString(ea.Body));
+                TransferModelFactory<TConsumeModel>.FromBytes(ea.Body));
 
             channel.BasicAck(
                 deliveryTag: ea.DeliveryTag,

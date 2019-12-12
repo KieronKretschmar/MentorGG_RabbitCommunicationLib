@@ -39,7 +39,7 @@ namespace RabbitTransfer
         public void HandleReceive(long matchId, string response)
         {
             //if response is JSON, deserialize into object like this
-            var responseModel = JsonConvert.DeserializeObject<BaseTransferModel>(response);
+            var responseModel = JsonConvert.DeserializeObject<TransferModel>(response);
 
             Console.WriteLine("[.] received {0}", response);
         }

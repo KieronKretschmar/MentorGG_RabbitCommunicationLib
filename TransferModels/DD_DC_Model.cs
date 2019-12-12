@@ -1,5 +1,5 @@
 ﻿
-public class DD_DC_Model : BaseTransferModel
+public class DD_DC_Model : TransferModel
 {
     public string zippedFilePath { get; set; }
 

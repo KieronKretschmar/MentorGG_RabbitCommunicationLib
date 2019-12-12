@@ -4,10 +4,13 @@ using RabbitTransfer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static TransferModel;
 
 namespace RabbitTransfer.Consumer
 {
-    public abstract class RPCConsumer : Consumer
+    public abstract class RPCConsumer<TConsumeModel, TProduceModel> : Consumer<TConsumeModel>
+        where TConsumeModel: ITransferModel
+        where TProduceModel: ITransferModel
     {
         public RPCConsumer(IQueueConnection queueConnection) : base(queueConnection) { }
 
@@ -15,9 +18,9 @@ namespace RabbitTransfer.Consumer
         {
             // Let the overidden method handle the message and return a response.
 
-            var replyMessage = HandleMessageAndReply(
+            TProduceModel replyModel = HandleMessageAndReply(
                 ea.BasicProperties,
-                Encoding.UTF8.GetString(ea.Body));
+                TransferModelFactory<TConsumeModel>.FromBytes(ea.Body));
 
             channel.BasicAck(
                 deliveryTag: ea.DeliveryTag,
@@ -25,7 +28,7 @@ namespace RabbitTransfer.Consumer
 
             // Publish reply message
 
-            byte[] responseBytes = Encoding.UTF8.GetBytes(replyMessage);
+            byte[] responseBytes = replyModel.ToBytes();
             var replyProps = channel.CreateBasicProperties();
             replyProps.CorrelationId = ea.BasicProperties.CorrelationId;
 
@@ -36,9 +39,9 @@ namespace RabbitTransfer.Consumer
                 body: responseBytes);
         }
 
-        protected abstract string HandleMessageAndReply(IBasicProperties properties, string message);
+        protected abstract TProduceModel HandleMessageAndReply(IBasicProperties properties, TConsumeModel model);
 
-        protected override void HandleMessage(IBasicProperties properties, string message)
+        protected override void HandleMessage(IBasicProperties properties, TConsumeModel model)
         {
             throw new InvalidOperationException("RPC Consumer expects a replyMessage, use HandleMessageAndReply!");
         }
