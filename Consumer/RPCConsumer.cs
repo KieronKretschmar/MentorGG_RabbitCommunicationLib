@@ -18,14 +18,17 @@ namespace RabbitTransfer.Consumer
         where TConsumeModel: ITransferModel
         where TProduceModel: ITransferModel
     {
-        public Producer<TProduceModel> Producer { get; }
+        /// <summary>
+        /// Producer for publishing replies.
+        /// </summary>
+        private readonly Producer<TProduceModel> producer;
 
         /// <summary>
         /// Set the AMQP Connection.
         /// </summary>
         public RPCConsumer(IQueueConnection queueConnection) : base(queueConnection)
         {
-            Producer = new Producer<TProduceModel>(queueConnection);
+            producer = new Producer<TProduceModel>(queueConnection);
         }
 
         /// <summary>
@@ -47,7 +50,7 @@ namespace RabbitTransfer.Consumer
 
             // Publish reply message
 
-            Producer.PublishMessage(ea.BasicProperties.CorrelationId, replyModel);
+            producer.PublishMessage(ea.BasicProperties.CorrelationId, replyModel);
         }
 
         /// <summary>
