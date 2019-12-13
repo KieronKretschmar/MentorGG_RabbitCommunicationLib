@@ -57,7 +57,23 @@ namespace RabbitTransfer.Consumer
         /// <param name="ea">Event Arguments</param>
         protected virtual void OnConsumerReceived(IModel channel, BasicDeliverEventArgs ea)
         {
-            // Let the overidden method handle the message and return a response.
+            // If a model cannot be obtained from the body,
+            // acknowledge the message as no work can be done with an invalid model..
+            TConsumeModel model;
+            try
+            {
+                model = TransferModelFactory<TConsumeModel>.FromBytes(ea.Body);
+            }
+            catch
+            {
+                channel.BasicAck(
+                    deliveryTag: ea.DeliveryTag,
+                    multiple: false);
+
+                return;
+            }
+
+            // Handle on Redelivered
             if (ea.Redelivered)
                 AcknowledgeBeforeHandling(channel, ea);
             else
