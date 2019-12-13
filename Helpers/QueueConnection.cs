@@ -1,9 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using RabbitMQ.Client;
+﻿using RabbitMQ.Client;
 using RabbitTransfer.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RabbitTransfer.Helpers
 {
