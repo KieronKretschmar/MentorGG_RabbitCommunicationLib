@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RabbitTransfer.Interfaces
 {
-    public interface IQueueReplyQueueConnection : IQueueConnection
+    public interface IRPCQueueConnection : IQueueConnection
     {
         /// <summary>
         /// Queue to listen for replies
