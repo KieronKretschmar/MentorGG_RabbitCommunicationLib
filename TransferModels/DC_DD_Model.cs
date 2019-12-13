@@ -1,5 +1,5 @@
-﻿public class DC_DD_Model : BaseTransferModel
+﻿public class DC_DD_Model : TransferModel
 {
-    public string DownloadPath { get; set; }
+    public string DownloadUrl { get; set; }
 }
 

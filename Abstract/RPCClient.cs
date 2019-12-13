@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RabbitTransfer
+namespace RabbitTransfer.Abstract
 {
-    public abstract class AbstractRPCClient<T> : IDisposable
+    public abstract class RPCClient<T> : IDisposable
     {
         public abstract string QUEUE_NAME { get; }
         public abstract string REPLY_QUEUE { get; }
@@ -23,7 +23,7 @@ namespace RabbitTransfer
         /// <summary>
         /// Initialize rpc pattern
         /// </summary>
-        protected AbstractRPCClient()
+        protected RPCClient()
         {
             _connection = RabbitInitializer.GetNewConnection();
             _channel = _connection.CreateModel();
