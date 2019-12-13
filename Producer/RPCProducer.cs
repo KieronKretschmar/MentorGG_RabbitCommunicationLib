@@ -26,7 +26,7 @@ namespace RabbitTransfer.Producer
         /// Set the AMQP Connection.
         /// </summary>
         /// <param name="connection"></param>
-        protected RPCProducer(IQueueReplyQueueConnection queueConnection) : base(queueConnection)
+        protected RPCProducer(IQueueReplyQueueConnection queueConnection, bool persistantMessageSending = true) : base(queueConnection, persistantMessageSending)
         {
             _replyQueue = queueConnection.ReplyQueue;
             _connection = queueConnection.Connection;

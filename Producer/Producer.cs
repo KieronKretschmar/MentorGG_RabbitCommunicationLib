@@ -18,17 +18,25 @@ namespace RabbitTransfer.Producer
         private readonly IQueueConnection _queueConnection;
 
         /// <summary>
+        /// Bool, whether messages should be saved to disk
+        /// </summary>
+        private readonly bool _persistentMessageSending;
+
+        /// <summary>
         /// Connection channel.
         /// </summary>
         private IModel channel;
+
+
 
         /// <summary>
         /// Set the AMQP Connection.
         /// </summary>
         /// <param name="connection"></param>
-        public Producer(IQueueConnection queueConnection)
+        public Producer(IQueueConnection queueConnection, bool persistentMessageSending = true)
         {
             _queueConnection = queueConnection;
+            _persistentMessageSending = persistentMessageSending;
         }
 
         public void PublishMessage(string correlationId, TProduceModel produceModel)
@@ -37,6 +45,8 @@ namespace RabbitTransfer.Producer
             props.CorrelationId = correlationId;
 
             byte[] messageBody = produceModel.ToBytes();
+
+            props.Persistent = _persistentMessageSending;
 
             channel.BasicPublish(
                 exchange: "",
