@@ -71,9 +71,10 @@ namespace RabbitTransfer.Consumer
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             channel = _queueConnection.Connection.CreateModel();
+
             channel.QueueDeclare(
                 queue: _queueConnection.QueueName,
-                durable: false,
+                durable: true,
                 exclusive: false,
                 autoDelete: false);
 
