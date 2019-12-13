@@ -16,7 +16,7 @@ namespace RabbitTransfer.Consumer
     /// An Abstract IHostedService AMQP Consumer with managed Start and Stop calls.
     /// </summary>
     /// <typeparam name="TConsumeModel">Tranfer Model to consume.</typeparam>
-    public abstract class Consumer<TConsumeModel> : IHostedService where TConsumeModel: ITransferModel
+    public abstract class Consumer<TConsumeModel> : IHostedService where TConsumeModel : ITransferModel
     {
         /// <summary>
         /// Connection to the AMQP Rabbit Instance.
@@ -58,14 +58,10 @@ namespace RabbitTransfer.Consumer
         protected virtual void OnConsumerReceived(IModel channel, BasicDeliverEventArgs ea)
         {
             // Let the overidden method handle the message and return a response.
-
-            HandleMessage(
-                ea.BasicProperties,
-                TransferModelFactory<TConsumeModel>.FromBytes(ea.Body));
-
-            channel.BasicAck(
-                deliveryTag: ea.DeliveryTag,
-                multiple: false);
+            if (ea.Redelivered)
+                AcknowledgeBeforeHandling(channel, ea);
+            else
+                AcknowledgeAfterHandling(channel, ea);
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -93,14 +89,38 @@ namespace RabbitTransfer.Consumer
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
-            channel.ModelShutdown += (sender, ea) => {
-                consumer.HandleModelShutdown((IModel)sender, ea);
+            channel.ModelShutdown += (sender, ea) =>
+            {
+                consumer.HandleModelShutdown((IModel) sender, ea);
             };
 
             channel.Dispose();
             _queueConnection.Connection.Dispose();
 
             await Task.CompletedTask;
+        }
+
+        private void AcknowledgeAfterHandling(IModel channel, BasicDeliverEventArgs ea)
+        {
+            HandleMessage(
+                ea.BasicProperties,
+                TransferModelFactory<TConsumeModel>.FromBytes(ea.Body));
+
+            channel.BasicAck(
+                     deliveryTag: ea.DeliveryTag,
+                     multiple: false);
+        }
+
+        private void AcknowledgeBeforeHandling(IModel channel, BasicDeliverEventArgs ea)
+        {
+            channel.BasicAck(
+                     deliveryTag: ea.DeliveryTag,
+                     multiple: false);
+
+            HandleMessage(
+                ea.BasicProperties,
+                TransferModelFactory<TConsumeModel>.FromBytes(ea.Body));
+
         }
     }
 }
