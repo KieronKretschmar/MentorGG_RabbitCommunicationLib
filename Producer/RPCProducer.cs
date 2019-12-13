@@ -26,7 +26,7 @@ namespace RabbitTransfer.Producer
         /// Set the AMQP Connection.
         /// </summary>
         /// <param name="connection"></param>
-        protected RPCProducer(IQueueReplyQueueConnection queueConnection) : base(queueConnection)
+        protected RPCProducer(IQueueReplyQueueConnection queueConnection, bool persistantMessageSending = true) : base(queueConnection, persistantMessageSending)
         {
             _replyQueue = queueConnection.ReplyQueue;
             _connection = queueConnection.Connection;
@@ -47,26 +47,15 @@ namespace RabbitTransfer.Producer
         public new async Task StartAsync(CancellationToken cancellationToken)
         {
             await base.StartAsync(cancellationToken);
-
-            var channel = _connection.CreateModel();
-            
-            channel.QueueDeclare(
-                queue: _replyQueue,
-                durable: false,
-                exclusive: false,
-                autoDelete: false
-                );
-
             //Start consuming 
             await consumer.StartAsync(cancellationToken);
         }
 
         public new async Task StopAsync(CancellationToken cancellationToken)
         {
+            await base.StopAsync(cancellationToken); 
             //stop consuming
             await consumer.StopAsync(cancellationToken);
-
-            await base.StopAsync(cancellationToken);
         }
     }
 
