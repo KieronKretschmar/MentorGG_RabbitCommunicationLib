@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 
 namespace RabbitTransfer.Producer
 {
+
+    /// <summary>
+    /// An Abstract IHostedService AMQP RPC Consumer with managed Start and Stop calls.
+    /// </summary>
+    /// <typeparam name="TProduceModel">ITransferModel to sent out</typeparam>
+    /// <typeparam name="TConsumeModel">ITransferModel to receive</typeparam>
     public abstract class RPCProducer<TProduceModel, TConsumeModel> : Producer<TProduceModel>
         where TProduceModel : ITransferModel
         where TConsumeModel : ITransferModel
@@ -55,8 +61,6 @@ namespace RabbitTransfer.Producer
 
             //Start consuming 
             await consumer.StartAsync(cancellationToken);
-
-            await Task.CompletedTask;
         }
 
     
