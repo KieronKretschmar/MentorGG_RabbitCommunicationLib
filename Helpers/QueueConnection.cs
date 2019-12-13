@@ -27,25 +27,6 @@ namespace RabbitTransfer.Helpers
     public class QueueConnection : IQueueConnection
     {
         /// <summary>
-        /// Create a QueueConnection from a Configuration
-        /// Enviroment Variables Used: [ AMQP_URI, AMQP_QUEUE ]
-        /// </summary>
-        public QueueConnection(IConfiguration configuration)
-        {
-            try
-            {
-                Connection = ConnectionFactoryHelper.FromUriString(configuration.GetValue<string>("AMQP_URI"));
-                Queue = configuration.GetValue<string>("AMQP_QUEUE");
-
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Failed to create AMQP Connection, Please check " +
-                    "the enviroment variables are set correctly", e);
-            }
-        }
-
-        /// <summary>
         /// Create a QueueConnection.
         /// </summary>
         /// <param name="rabbitUri">Rabbit URI</param>

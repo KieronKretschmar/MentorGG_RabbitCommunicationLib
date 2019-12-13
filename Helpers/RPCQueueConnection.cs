@@ -9,15 +9,6 @@ namespace RabbitTransfer.Helpers
     class RPCQueueConnection : QueueConnection, IRPCQueueConnection
     {
         /// <summary>
-        /// Create a QueueConnection from a Configuration
-        /// Enviroment Variables Used: [ AMQP_URI, AMQP_QUEUE, AMQP_REPLY_QUEUE ]
-        /// </summary>
-        public RPCQueueConnection(IConfiguration configuration) : base(configuration)
-        {
-            ReplyQueue = configuration.GetValue<string>("AMQP_REPLY_QUEUE");
-        }
-
-        /// <summary>
         /// Create a QueueConnection.
         /// </summary>
         /// <param name="rabbitUri">Rabbit URI</param>
