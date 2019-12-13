@@ -12,6 +12,7 @@ namespace RabbitTransfer.Helpers
         /// <param name="replyQueueName">Reply Queue Name</param>
         public RPCQueueConnection(string rabbitUri, string queueName, string replyQueueName) : base(rabbitUri, queueName)
         {
+            AssertValidValue("replyQueueName", replyQueueName);
             ReplyQueue = replyQueueName;
         }
 
