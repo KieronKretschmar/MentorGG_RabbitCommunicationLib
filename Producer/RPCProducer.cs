@@ -26,7 +26,7 @@ namespace RabbitTransfer.Producer
         /// Set the AMQP Connection.
         /// </summary>
         /// <param name="connection"></param>
-        protected RPCProducer(IQueueReplyQueueConnection queueConnection, bool persistantMessageSending = true) : base(queueConnection, persistantMessageSending)
+        protected RPCProducer(IRPCQueueConnection queueConnection, bool persistantMessageSending = true) : base(queueConnection, persistantMessageSending)
         {
             _replyQueue = queueConnection.ReplyQueue;
             _connection = queueConnection.Connection;
@@ -87,17 +87,17 @@ namespace RabbitTransfer.Producer
     }
 
     /// <summary>
-    /// Reverses the <see cref="IQueueReplyQueueConnection"/> , so the ReplyQueue is the <see cref="IQueueConnection.QueueName"/>.
+    /// Reverses the <see cref="IRPCQueueConnection"/> , so the ReplyQueue is the <see cref="IQueueConnection.Queue"/>.
     /// </summary>
     internal class ReplyConnection : IQueueConnection
     {
         public IConnection Connection { get ; set; }
-        public string QueueName { get; set; }
+        public string Queue { get; set; }
 
-        public ReplyConnection(IQueueReplyQueueConnection queueConnection)
+        public ReplyConnection(IRPCQueueConnection queueConnection)
         {
             Connection = queueConnection.Connection;
-            QueueName = queueConnection.ReplyQueue;
+            Queue = queueConnection.ReplyQueue;
         }
     }
 }
