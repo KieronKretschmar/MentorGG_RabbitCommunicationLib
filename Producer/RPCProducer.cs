@@ -44,8 +44,6 @@ namespace RabbitTransfer.Producer
         /// <param name="consumeModel">transfermodel of the message</param>
         public abstract void HandleReply(IBasicProperties properties, TConsumeModel consumeModel);
 
-
-        /// <inheritdoc/>
         public new async Task StartAsync(CancellationToken cancellationToken)
         {
             await base.StartAsync(cancellationToken);
@@ -63,8 +61,6 @@ namespace RabbitTransfer.Producer
             await consumer.StartAsync(cancellationToken);
         }
 
-    
-        /// <inheritdoc/>
         public new async Task StopAsync(CancellationToken cancellationToken)
         {
             //stop consuming
