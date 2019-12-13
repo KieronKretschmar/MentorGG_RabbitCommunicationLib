@@ -61,7 +61,7 @@ namespace RabbitTransfer.Producer
 
             channel.QueueDeclare(
                 queue: _queueConnection.QueueName,
-                durable: false,
+                durable: true,
                 exclusive: false,
                 autoDelete: false);
 

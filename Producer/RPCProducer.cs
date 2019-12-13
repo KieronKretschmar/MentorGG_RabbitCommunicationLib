@@ -52,7 +52,7 @@ namespace RabbitTransfer.Producer
             
             channel.QueueDeclare(
                 queue: _replyQueue,
-                durable: false,
+                durable: true,
                 exclusive: false,
                 autoDelete: false
                 );
