@@ -50,7 +50,7 @@ namespace RabbitTransfer.Producer
 
             channel.BasicPublish(
                 exchange: "",
-                routingKey: _queueConnection.QueueName,
+                routingKey: _queueConnection.Queue,
                 basicProperties: props,
                 body: messageBody);
         }
@@ -60,7 +60,7 @@ namespace RabbitTransfer.Producer
             channel = _queueConnection.Connection.CreateModel();
 
             channel.QueueDeclare(
-                queue: _queueConnection.QueueName,
+                queue: _queueConnection.Queue,
                 durable: true,
                 exclusive: false,
                 autoDelete: false);

@@ -1,7 +1,6 @@
-﻿using RabbitMQ.Client;
+﻿using Microsoft.Extensions.Configuration;
+using RabbitMQ.Client;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RabbitTransfer.Interfaces
 {
@@ -15,6 +14,6 @@ namespace RabbitTransfer.Interfaces
         /// <summary>
         /// AMQP Queue to consume.
         /// </summary>
-        string QueueName { get; set; }
+        string Queue { get; set; }
     }
 }

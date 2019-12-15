@@ -73,7 +73,7 @@ namespace RabbitTransfer.Consumer
             channel = _queueConnection.Connection.CreateModel();
 
             channel.QueueDeclare(
-                queue: _queueConnection.QueueName,
+                queue: _queueConnection.Queue,
                 durable: true,
                 exclusive: false,
                 autoDelete: false);
@@ -84,7 +84,7 @@ namespace RabbitTransfer.Consumer
             consumer.Received += (model, ea) => OnConsumerReceived(channel, ea);
 
             channel.BasicConsume(
-                queue: _queueConnection.QueueName,
+                queue: _queueConnection.Queue,
                 autoAck: false,
                 consumer: consumer);
 
