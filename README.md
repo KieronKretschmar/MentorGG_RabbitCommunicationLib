@@ -1,29 +1,132 @@
-This repo provides abstractions for common rabbit patterns:
+# RabbitCommunicationLib 
 
-currently only the rpc pattern which consists of a client and a server
-
-It also stores all the transfer models, needed to properly decode a sent message.
-
-##Usage##
-
-----
-
-There are two examples in the **examples** folder. These are made for copy-pasting as your rabbit communicator. You need to replace the queue name and implement proper message handling. 
-
-If you are using the _RPC Pattern_, here are abstract classes you can implement to ease your work.
-	###RPC Client###
-	The abstract class requires the Type of the response model. It handles parsing into the model, so you can use the **HandleReceive()** with the parsed model as a parameter.
-	
-	Sending a message is done in the **SendNewDemo(long matchId,string demoModel)**, implemented in the abstract class.
-	
-	You need to specify the Send-Queue and Reply-Queue names.
-
-	###RPC Server###
-	This abstract class handles receiving and replying to a message. It gets the Reply-Queue from the ReplyTo-field in the message Header. **You** need to specify the Send-Queue.
-	Implement your message handling in the **OnMessageReceived**, adn return the string you want to send back.
+A library to assist in developing asycnronous micro-services using RabbitMQ within MentorEngine.
 
 
-##Basic Rabbit Exchange##
+## Transfer Models
+When creating a service you need to define at least one TransferModel that implements `ITransferModel`, 
+this is used for serialization and de-serialization of data.
+
+There are two models used, `TConsumeModel` and `TProduceModel` for message consumtion and production respectively.
+
+---
+
+## Usage
+
+### 1. Establish a connection with a RabbitMQ Server.
+
+A connection that implements `IQueueConnection` is required for all services - For standard use, instantiating the
+`QueueConnection` in `/helpers` is sufficient.
+
+```csharp
+var connection = new QueueConnection("amqp://*******", "DD2DD");
+
+```
+
+It is reccomended to pull these variables from the Enviroment. 
+
+```csharp
+using RabbitTransfer.Helpers;
+
+public static IHostBuilder CreateHostBuilder(string[] args) =>
+    Host.CreateDefaultBuilder(args)
+        .ConfigureServices((hostContext, services) =>
+        {
+		...
+
+		var connection = new QueueConnection(
+            hostContext.Configuration.GetValue<string>("AMQP_URI"),
+            hostContext.Configuration.GetValue<string>("AMQP_URL_QUEUE"));
+
+		...
+```
+
+---
+
+### 2. Create a Service ( Consumer || Producer )
+
+#### Consumer
+
+A Consumer requires you to create a class that inherits from `Consumer<TConsumeModel` class 
+and overrides the `HandleMessage` method.
+
+You must supply a `TConsumeModel`.
+
+```csharp
+using RabbitTransfer.Consumer;
+
+class ExampleConsumer : Consumer<DC_DD_Model>
+{
+    public ExampleConsumer(IQueueConnection queueConnection) : base(queueConnection) { }
+
+    protected override void HandleMessage(IBasicProperties properties, DC_DD_Model model)
+    {
+        Console.WriteLine($"Heres a DownloadUrl: {model.DownloadUrl}");
+    }
+}
+
+```
+
+#### Producer
+
+A Producer can be instantiated without the need of a parent class.
+
+You must supply a `TProduceModel`.
+
+To produce a message:
+- Define a `correlationId<string>` (Usually MatchId)
+- Define a  `produceModel<TProduceModel>`
+
+```csharp
+using RabbitTransfer.Producer;
+
+...
+
+	// Create the producer using an existing connection
+	DemoUrlProducer = new Producer<DD_DC_Model>(queueConnection);
+
+	// Publish a message
+	DemoUrlProducer.PublishMessage(matchId, new DD_DC_Model { DemoUrl = "http://mentor.gg/bestdemo.dem" });
+
+```
+
+---
+
+### 2. Create a RPC Service ( RPCConsumer || RPCProducer )
+
+#### RPCConsumer
+
+An RPCConsumer has the similar requirements as the standard Consumer but you must also specifiy a `TProduceModel` for replies.
+
+Instead of overidding the `HandleMessage` method, an RPCConsumer expects you to return a reply of type `TProduceModel` using `HandleMessageAndReply`
+
+```csharp
+using RabbitTransfer.Consumer;
+
+class ExampleConsumer : RPCConsumer<DC_DD_Model, DD_DC_Model>
+{
+    public ExampleConsumer(IQueueConnection queueConnection) : base(queueConnection) { }
+
+    protected override DD_DC_Model HandleMessageAndReply(IBasicProperties properties, DC_DD_Model model)
+    {
+        Console.WriteLine($"Heres a DownloadUrl: {model.DownloadUrl}");
+		...
+		return new DD_DC_Model { DemoUrl = "http://mentor.gg/bestdemo.dem" }
+    }
+}
+
+```
+
+#### RPCProducer
+
+TODO
+
+---
+
+
+# Diagrams
+
+## Basic Rabbit Exchange
  ```mermaid
 	graph LR
     A((Publisher)) --> B{Exchange}
@@ -38,7 +141,7 @@ classDef publisher fill:#84EBFD;
 
  ```
 
-##RPC PATTERN##
+## RPC Pattern
 
 ```mermaid
 graph LR
