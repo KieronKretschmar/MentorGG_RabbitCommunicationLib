@@ -29,14 +29,14 @@ It is reccomended to pull these variables from the Enviroment.
 using RabbitTransfer.Helpers;
 
 public static IHostBuilder CreateHostBuilder(string[] args) =>
-    Host.CreateDefaultBuilder(args)
-        .ConfigureServices((hostContext, services) =>
-        {
+	Host.CreateDefaultBuilder(args)
+		.ConfigureServices((hostContext, services) =>
+		{
 		...
 
 		var connection = new QueueConnection(
-            hostContext.Configuration.GetValue<string>("AMQP_URI"),
-            hostContext.Configuration.GetValue<string>("AMQP_URL_QUEUE"));
+			hostContext.Configuration.GetValue<string>("AMQP_URI"),
+			hostContext.Configuration.GetValue<string>("AMQP_URL_QUEUE"));
 
 		...
 ```
@@ -57,12 +57,12 @@ using RabbitTransfer.Consumer;
 
 class ExampleConsumer : Consumer<DC_DD_Model>
 {
-    public ExampleConsumer(IQueueConnection queueConnection) : base(queueConnection) { }
+	public ExampleConsumer(IQueueConnection queueConnection) : base(queueConnection) { }
 
-    protected override void HandleMessage(IBasicProperties properties, DC_DD_Model model)
-    {
-        Console.WriteLine($"Heres a DownloadUrl: {model.DownloadUrl}");
-    }
+	protected override void HandleMessage(IBasicProperties properties, DC_DD_Model model)
+	{
+		Console.WriteLine($"Heres a DownloadUrl: {model.DownloadUrl}");
+	}
 }
 
 ```
@@ -107,12 +107,14 @@ class ExampleConsumer : RPCConsumer<DC_DD_Model, DD_DC_Model>
 {
     public ExampleConsumer(IQueueConnection queueConnection) : base(queueConnection) { }
 
-    protected override DD_DC_Model HandleMessageAndReply(IBasicProperties properties, DC_DD_Model model)
-    {
-        Console.WriteLine($"Heres a DownloadUrl: {model.DownloadUrl}");
+	protected override DD_DC_Model HandleMessageAndReply(IBasicProperties properties, DC_DD_Model model)
+	{
+		Console.WriteLine($"Heres a DownloadUrl: {model.DownloadUrl}");
+
 		...
+		
 		return new DD_DC_Model { DemoUrl = "http://mentor.gg/bestdemo.dem" }
-    }
+	}
 }
 
 ```
