@@ -16,7 +16,8 @@ namespace RabbitTransfer.Consumer
     /// An Abstract IHostedService AMQP Consumer with managed Start and Stop calls.
     /// </summary>
     /// <typeparam name="TConsumeModel">Tranfer Model to consume.</typeparam>
-    public abstract class Consumer<TConsumeModel> : IHostedService where TConsumeModel: ITransferModel
+    public abstract class Consumer<TConsumeModel> : IHostedService
+        where TConsumeModel : ITransferModel
     {
         /// <summary>
         /// Connection to the AMQP Rabbit Instance.
@@ -51,21 +52,51 @@ namespace RabbitTransfer.Consumer
 
 
         /// <summary>
+        /// Basic Acknowledge a message
+        /// </summary>
+        /// <param name="ea">Event Arguments</param>
+        protected virtual void BasicAcknowledge(BasicDeliverEventArgs ea)
+        {
+            channel.BasicAck(
+                    deliveryTag: ea.DeliveryTag,
+                    multiple: false);
+        }
+
+        /// <summary>
         /// Handle the event if a Rabbit consumer receives a message.
         /// </summary>
         /// <param name="channel">AMQP Connection channel</param>
         /// <param name="ea">Event Arguments</param>
         protected virtual void OnConsumerReceived(IModel channel, BasicDeliverEventArgs ea)
         {
-            // Let the overidden method handle the message and return a response.
+            // If a model cannot be obtained from the body,
+            // acknowledge the message as no work can be done with an invalid model..
+            TConsumeModel model;
+            try
+            {
+                model = TransferModelFactory<TConsumeModel>.FromBytes(ea.Body);
+            }
+            catch
+            {
+                BasicAcknowledge(ea);
+                throw;
+            }
 
-            HandleMessage(
-                ea.BasicProperties,
-                TransferModelFactory<TConsumeModel>.FromBytes(ea.Body));
+            // If a message was Redelivered, acknowledge before handling,
 
-            channel.BasicAck(
-                deliveryTag: ea.DeliveryTag,
-                multiple: false);
+            // WARNING: If the application crashes, the message will be acknowledged
+            //          and will not be resent.
+            if (ea.Redelivered)
+            {
+                BasicAcknowledge(ea);
+                HandleMessage(ea.BasicProperties, model);
+            }
+            // If a message has not been Redilivered attempt to handle it, then acknowledge.
+            else
+            {
+                HandleMessage(ea.BasicProperties, model);
+                BasicAcknowledge(ea);
+            }
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -93,8 +124,9 @@ namespace RabbitTransfer.Consumer
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
-            channel.ModelShutdown += (sender, ea) => {
-                consumer.HandleModelShutdown((IModel)sender, ea);
+            channel.ModelShutdown += (sender, ea) =>
+            {
+                consumer.HandleModelShutdown((IModel) sender, ea);
             };
 
             channel.Dispose();
