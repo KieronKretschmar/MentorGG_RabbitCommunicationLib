@@ -1,4 +1,5 @@
-﻿using RabbitMQ.Client;
+﻿using Microsoft.Extensions.Hosting;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitTransfer.Consumer;
 using RabbitTransfer.Interfaces;
@@ -11,93 +12,63 @@ namespace RabbitTransfer.Producer
 
     /// <summary>
     /// An Abstract IHostedService AMQP RPC Consumer with managed Start and Stop calls.
+    ///
+    /// Use this Producer if you want to send a message and receive a reply.
     /// </summary>
     /// <typeparam name="TProduceModel">ITransferModel to sent out</typeparam>
     /// <typeparam name="TConsumeModel">ITransferModel to receive</typeparam>
-    public abstract class RPCProducer<TProduceModel, TConsumeModel> : Producer<TProduceModel>
+    public abstract class RPCProducer<TProduceModel, TConsumeModel> : IHostedService
         where TProduceModel : ITransferModel
         where TConsumeModel : ITransferModel
     {
-        private readonly string _replyQueue;
-        private readonly IConnection _connection;
-        private readonly ReplyConsumer<TConsumeModel> consumer;
+
+        private readonly ActionConsumer<TConsumeModel> consumer;
+        private readonly Producer<TProduceModel> producer;
 
         /// <summary>
         /// Set the AMQP Connection.
         /// </summary>
         /// <param name="connection"></param>
-        protected RPCProducer(IRPCQueueConnection queueConnection, bool persistantMessageSending = true) : base(queueConnection, persistantMessageSending)
+        protected RPCProducer(
+            IRPCQueueConnections queueConnections,
+            bool persistantMessageSending = true)
         {
-            _replyQueue = queueConnection.ReplyQueue;
-            _connection = queueConnection.Connection;
+            producer = new Producer<TProduceModel>(
+                queueConnections.ProduceConnection,
+                persistantMessageSending);
 
-            //Reverse the cnonnection, so the consumer listens to the response queue
-            ReplyConnection reversedConnection = new ReplyConnection(queueConnection);
-
-            consumer = new ReplyConsumer<TConsumeModel>(reversedConnection,HandleReply);
+            consumer = new ActionConsumer<TConsumeModel>(
+                queueConnections.ConsumeConnection,
+                HandleMessage);
         }
 
         /// <summary>
-        /// Abstract method to handle a message.
+        /// Publish a message using the attached producer.
+        /// </summary>
+        /// <param name="correlationId"></param>
+        /// <param name="produceModel"></param>
+        public void PublishMessage(string correlationId, TProduceModel produceModel)
+            => producer.PublishMessage(correlationId, produceModel);
+
+        /// <summary>
+        /// Abstract method to handle a Transfer Model. (A reply in this context)
+        ///
+        /// Overide this method to get the functionality.
         /// </summary>
         /// <param name="properties">headers of the message</param>
         /// <param name="consumeModel">transfermodel of the message</param>
-        public abstract void HandleReply(IBasicProperties properties, TConsumeModel consumeModel);
+        public abstract void HandleMessage(IBasicProperties properties, TConsumeModel consumeModel);
 
-        public new async Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await base.StartAsync(cancellationToken);
-            //Start consuming 
+            await producer.StartAsync(cancellationToken);
             await consumer.StartAsync(cancellationToken);
         }
 
-        public new async Task StopAsync(CancellationToken cancellationToken)
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
-            await base.StopAsync(cancellationToken); 
-            //stop consuming
+            await producer.StopAsync(cancellationToken);
             await consumer.StopAsync(cancellationToken);
-        }
-    }
-
-    /// <summary>
-    /// Provide a concrete implementation of a consumer so the <see cref="Consumer{TConsumeModel}.HandleMessage(IBasicProperties, TConsumeModel)"/> function can be overwritten
-    /// </summary>
-    /// <typeparam name="TConsumeModel"></typeparam>
-    internal class ReplyConsumer<TConsumeModel> : Consumer<TConsumeModel> where TConsumeModel : ITransferModel
-    {
-        /// <summary>
-        /// Store the function which handles the received message
-        /// </summary>
-        private readonly Action<IBasicProperties,TConsumeModel> _handleReply;
-
-        /// <summary>
-        /// Create a Consumer, which <see cref="HandleMessage(IBasicProperties, TConsumeModel)"/> function can be overwritten via an action passed to the controller
-        /// </summary>
-        /// <param name="queueConnection"></param>
-        /// <param name="handleReply">function, which is going to handle the received message</param>
-        public ReplyConsumer(IQueueConnection queueConnection, Action<IBasicProperties,TConsumeModel> handleReply) : base(queueConnection)
-        {
-            _handleReply = handleReply;
-        }
-
-        protected override void HandleMessage(IBasicProperties properties, TConsumeModel model)
-        {
-            _handleReply(properties, model);
-        }
-    }
-
-    /// <summary>
-    /// Reverses the <see cref="IRPCQueueConnection"/> , so the ReplyQueue is the <see cref="IQueueConnection.Queue"/>.
-    /// </summary>
-    internal class ReplyConnection : IQueueConnection
-    {
-        public IConnection Connection { get ; set; }
-        public string Queue { get; set; }
-
-        public ReplyConnection(IRPCQueueConnection queueConnection)
-        {
-            Connection = queueConnection.Connection;
-            Queue = queueConnection.ReplyQueue;
         }
     }
 }

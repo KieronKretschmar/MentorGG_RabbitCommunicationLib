@@ -131,7 +131,6 @@ namespace RabbitTransfer.Consumer
 
             channel.Dispose();
             _queueConnection.Connection.Dispose();
-
             await Task.CompletedTask;
         }
     }

@@ -38,6 +38,11 @@ namespace RabbitTransfer.Producer
             _persistentMessageSending = persistentMessageSending;
         }
 
+        /// <summary>
+        /// Publish a message to the Queue Channel.
+        /// </summary>
+        /// <param name="correlationId"></param>
+        /// <param name="produceModel"></param>
         public void PublishMessage(string correlationId, TProduceModel produceModel)
         {
             IBasicProperties props = channel.CreateBasicProperties();
@@ -69,6 +74,8 @@ namespace RabbitTransfer.Producer
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
+            channel.Dispose();
+            _queueConnection.Connection.Dispose();
             await Task.CompletedTask;
         }
     }
