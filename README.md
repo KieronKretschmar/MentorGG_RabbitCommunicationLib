@@ -121,7 +121,36 @@ class ExampleConsumer : RPCConsumer<DC_DD_Model, DD_DC_Model>
 
 #### RPCProducer
 
-TODO
+An RPCConsumer has the similar requirements as the standard Producer but you must also specifiy a `TConsumeModel` for reply handling.
+
+```csharp
+using RabbitTransfer.Producer;
+
+class ExampleProducer : RPCProducer<DC_DD_Model, DD_DC_Model>
+{
+    public ExamplProducer(IQueueConnection queueConnection) : base(queueConnection) { }
+
+	protected override void HandleReply(IBasicProperties properties, DD_DC_Model model)
+	{
+		Console.WriteLine($"Heres a DemoUrl: {model.DemoUrl}");
+	}
+}
+
+```
+
+Invotation is the same as a standard producer.
+
+```csharp
+
+	// Create the producer using an existing connection
+	DemoUrlProducer = ExampleProducer(queueConnection)
+
+	// Publish a message
+	DemoUrlProducer.PublishMessage(matchId, new DD_DC_Model { DemoUrl = "http://mentor.gg/bestdemo.dem" });
+
+
+```
+
 
 ---
 
