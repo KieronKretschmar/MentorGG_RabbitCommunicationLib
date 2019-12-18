@@ -4,11 +4,11 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitTransfer;
 using RabbitTransfer.Interfaces;
+using RabbitTransfer.TransferModels;
 using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static TransferModel;
 
 namespace RabbitTransfer.Consumer
 {
@@ -16,7 +16,9 @@ namespace RabbitTransfer.Consumer
     /// An Abstract IHostedService AMQP Consumer with managed Start and Stop calls.
     /// </summary>
     /// <typeparam name="TConsumeModel">Tranfer Model to consume.</typeparam>
-    public abstract class Consumer<TConsumeModel> : IHostedService
+    public abstract class Consumer<TConsumeModel> :
+    IConsumer<TConsumeModel>
+
         where TConsumeModel : ITransferModel
     {
         /// <summary>
@@ -48,7 +50,7 @@ namespace RabbitTransfer.Consumer
         /// </summary>
         /// <param name="properties">AMQP Properties</param>
         /// <param name="model">Received message</param>
-        protected abstract void HandleMessage(IBasicProperties properties, TConsumeModel model);
+        public abstract void HandleMessage(IBasicProperties properties, TConsumeModel model);
 
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace RabbitTransfer.Consumer
             TConsumeModel model;
             try
             {
-                model = TransferModelFactory<TConsumeModel>.FromBytes(ea.Body);
+                model = TransferModel.TransferModelFactory<TConsumeModel>.FromBytes(ea.Body);
             }
             catch
             {
@@ -131,7 +133,6 @@ namespace RabbitTransfer.Consumer
 
             channel.Dispose();
             _queueConnection.Connection.Dispose();
-
             await Task.CompletedTask;
         }
     }

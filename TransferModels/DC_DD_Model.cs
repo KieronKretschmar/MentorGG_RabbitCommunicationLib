@@ -1,5 +1,7 @@
-﻿public class DC_DD_Model : TransferModel
+﻿namespace RabbitTransfer.TransferModels
 {
-    public string DownloadUrl { get; set; }
+    public class DC_DD_Model : TransferModel
+    {
+        public string DownloadUrl { get; set; }
+    }
 }
-

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitTransfer.Interfaces;
+using RabbitTransfer.TransferModels;
 using System;
 using System.Text;
 using System.Threading;
@@ -8,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace RabbitTransfer.Producer
 {
-    public class Producer<TProduceModel> : IHostedService
+    public class Producer<TProduceModel> :
+    IProducer<TProduceModel>
+
         where TProduceModel: ITransferModel
     {
         /// <summary>
@@ -38,6 +41,11 @@ namespace RabbitTransfer.Producer
             _persistentMessageSending = persistentMessageSending;
         }
 
+        /// <summary>
+        /// Publish a message to the Queue Channel.
+        /// </summary>
+        /// <param name="correlationId">Correlation ID for the sent message</param>
+        /// <param name="produceModel">Model to produce (Message)</param>
         public void PublishMessage(string correlationId, TProduceModel produceModel)
         {
             IBasicProperties props = channel.CreateBasicProperties();
@@ -69,6 +77,8 @@ namespace RabbitTransfer.Producer
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
+            channel.Dispose();
+            _queueConnection.Connection.Dispose();
             await Task.CompletedTask;
         }
     }

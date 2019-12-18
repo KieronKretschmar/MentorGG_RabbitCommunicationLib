@@ -2,7 +2,7 @@
 using RabbitTransfer.Interfaces;
 using System;
 
-namespace RabbitTransfer.Helpers
+namespace RabbitTransfer.Queues
 {
     internal static class ConnectionFactoryHelper
     {
