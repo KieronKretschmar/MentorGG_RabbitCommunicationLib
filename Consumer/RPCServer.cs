@@ -19,7 +19,7 @@ namespace RabbitTransfer.Consumer
     /// </summary>
     /// <typeparam name="TConsumeModel">TransferModel to consume.</typeparam>
     /// <typeparam name="TProduceModel">Transfer Model to produce.</typeparam>
-    public abstract class RPCConsumer<TConsumeModel, TProduceModel> : RPCProducer<TProduceModel, TConsumeModel>
+    public abstract class RPCServer<TConsumeModel, TProduceModel> : RPCClient<TProduceModel, TConsumeModel>
         where TConsumeModel: ITransferModel
         where TProduceModel: ITransferModel
     {
@@ -27,7 +27,7 @@ namespace RabbitTransfer.Consumer
         /// <summary>
         /// Set the AMQP Connections.
         /// </summary>
-        public RPCConsumer(
+        public RPCServer(
             IRPCQueueConnections queueConnections,
             bool persistantMessageSending = true) : base(queueConnections, persistantMessageSending) { }
 

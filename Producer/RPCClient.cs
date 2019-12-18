@@ -17,7 +17,7 @@ namespace RabbitTransfer.Producer
     /// </summary>
     /// <typeparam name="TProduceModel">ITransferModel to sent out</typeparam>
     /// <typeparam name="TConsumeModel">ITransferModel to receive</typeparam>
-    public abstract class RPCProducer<TProduceModel, TConsumeModel> : IHostedService
+    public abstract class RPCClient<TProduceModel, TConsumeModel> : IHostedService
         where TProduceModel : ITransferModel
         where TConsumeModel : ITransferModel
     {
@@ -29,7 +29,7 @@ namespace RabbitTransfer.Producer
         /// Set the AMQP Connection.
         /// </summary>
         /// <param name="connection"></param>
-        protected RPCProducer(
+        protected RPCClient(
             IRPCQueueConnections queueConnections,
             bool persistantMessageSending = true)
         {
