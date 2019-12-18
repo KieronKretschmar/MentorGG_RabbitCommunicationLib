@@ -16,7 +16,9 @@ namespace RabbitTransfer.Consumer
     /// An Abstract IHostedService AMQP Consumer with managed Start and Stop calls.
     /// </summary>
     /// <typeparam name="TConsumeModel">Tranfer Model to consume.</typeparam>
-    public abstract class Consumer<TConsumeModel> : IHostedService
+    public abstract class Consumer<TConsumeModel> :
+    IConsumer<TConsumeModel>
+
         where TConsumeModel : ITransferModel
     {
         /// <summary>
@@ -48,7 +50,7 @@ namespace RabbitTransfer.Consumer
         /// </summary>
         /// <param name="properties">AMQP Properties</param>
         /// <param name="model">Received message</param>
-        protected abstract void HandleMessage(IBasicProperties properties, TConsumeModel model);
+        public abstract void HandleMessage(IBasicProperties properties, TConsumeModel model);
 
 
         /// <summary>

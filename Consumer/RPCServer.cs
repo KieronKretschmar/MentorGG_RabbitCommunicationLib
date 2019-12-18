@@ -19,7 +19,10 @@ namespace RabbitTransfer.Consumer
     /// </summary>
     /// <typeparam name="TConsumeModel">Transfer Model to consume.</typeparam>
     /// <typeparam name="TProduceModel">Transfer Model to produce.</typeparam>
-    public abstract class RPCServer<TConsumeModel, TProduceModel> : RPCClient<TProduceModel, TConsumeModel>
+    public abstract class RPCServer<TConsumeModel, TProduceModel> :
+    RPCClient<TProduceModel, TConsumeModel>,
+    IRPCServer<TConsumeModel, TProduceModel>
+
         where TConsumeModel: ITransferModel
         where TProduceModel: ITransferModel
     {
@@ -49,7 +52,7 @@ namespace RabbitTransfer.Consumer
         /// </summary>
         /// <param name="properties">AMQP Properties</param>
         /// <param name="model">Received message</param>
-        protected abstract TProduceModel HandleMessageAndReply(IBasicProperties properties, TConsumeModel model);
+        public abstract TProduceModel HandleMessageAndReply(IBasicProperties properties, TConsumeModel model);
 
     }
 }

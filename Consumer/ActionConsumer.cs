@@ -10,7 +10,9 @@ namespace RabbitTransfer.Consumer
     /// Provide a concrete implementation of a consumer so the <see cref="Consumer{TConsumeModel}.HandleMessage(IBasicProperties, TConsumeModel)"/> function can be overwritten
     /// </summary>
     /// <typeparam name="TConsumeModel"></typeparam>
-    public class ActionConsumer<TConsumeModel> : Consumer<TConsumeModel>
+    public class ActionConsumer<TConsumeModel> :
+    Consumer<TConsumeModel>
+    
         where TConsumeModel : ITransferModel
     {
         /// <summary>
@@ -28,7 +30,7 @@ namespace RabbitTransfer.Consumer
             _handleMessageAction = handleReply;
         }
 
-        protected override void HandleMessage(IBasicProperties properties, TConsumeModel model)
+        public override void HandleMessage(IBasicProperties properties, TConsumeModel model)
         {
             _handleMessageAction(properties, model);
         }

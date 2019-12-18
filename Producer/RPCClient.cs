@@ -17,7 +17,9 @@ namespace RabbitTransfer.Producer
     /// </summary>
     /// <typeparam name="TProduceModel">Transfer Model to produce</typeparam>
     /// <typeparam name="TConsumeModel">Transfer Model to consume</typeparam>
-    public abstract class RPCClient<TProduceModel, TConsumeModel> : IHostedService
+    public abstract class RPCClient<TProduceModel, TConsumeModel> : 
+    IRPCClient<TProduceModel, TConsumeModel>
+
         where TProduceModel : ITransferModel
         where TConsumeModel : ITransferModel
     {
