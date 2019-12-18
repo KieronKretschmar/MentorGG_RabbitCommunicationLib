@@ -17,7 +17,7 @@ namespace RabbitTransfer.Consumer
     ///
     /// Use this Consumer if you want to reply to a received message.
     /// </summary>
-    /// <typeparam name="TConsumeModel">TransferModel to consume.</typeparam>
+    /// <typeparam name="TConsumeModel">Transfer Model to consume.</typeparam>
     /// <typeparam name="TProduceModel">Transfer Model to produce.</typeparam>
     public abstract class RPCServer<TConsumeModel, TProduceModel> : RPCClient<TProduceModel, TConsumeModel>
         where TConsumeModel: ITransferModel

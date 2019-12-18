@@ -15,8 +15,8 @@ namespace RabbitTransfer.Producer
     ///
     /// Use this Producer if you want to send a message and receive a reply.
     /// </summary>
-    /// <typeparam name="TProduceModel">ITransferModel to sent out</typeparam>
-    /// <typeparam name="TConsumeModel">ITransferModel to receive</typeparam>
+    /// <typeparam name="TProduceModel">Transfer Model to produce</typeparam>
+    /// <typeparam name="TConsumeModel">Transfer Model to consume</typeparam>
     public abstract class RPCClient<TProduceModel, TConsumeModel> : IHostedService
         where TProduceModel : ITransferModel
         where TConsumeModel : ITransferModel
@@ -56,7 +56,7 @@ namespace RabbitTransfer.Producer
         /// Overide this method to get the functionality.
         /// </summary>
         /// <param name="properties">headers of the message</param>
-        /// <param name="consumeModel">transfermodel of the message</param>
+        /// <param name="consumeModel">Transfer Model of the message</param>
         public abstract void HandleMessage(IBasicProperties properties, TConsumeModel consumeModel);
 
         public async Task StartAsync(CancellationToken cancellationToken)
