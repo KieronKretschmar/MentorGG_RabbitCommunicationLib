@@ -1,5 +1,6 @@
 
 using Microsoft.Extensions.Hosting;
+using RabbitTransfer.TransferModels;
 
 namespace RabbitTransfer.Interfaces
 {

@@ -1,5 +1,6 @@
 ﻿using RabbitMQ.Client;
 using RabbitTransfer.Interfaces;
+using RabbitTransfer.TransferModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +13,7 @@ namespace RabbitTransfer.Consumer
     /// <typeparam name="TConsumeModel"></typeparam>
     public class ActionConsumer<TConsumeModel> :
     Consumer<TConsumeModel>
-    
+
         where TConsumeModel : ITransferModel
     {
         /// <summary>

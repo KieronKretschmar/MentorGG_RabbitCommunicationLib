@@ -4,11 +4,11 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitTransfer;
 using RabbitTransfer.Interfaces;
+using RabbitTransfer.TransferModels;
 using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static TransferModel;
 
 namespace RabbitTransfer.Consumer
 {
@@ -76,7 +76,7 @@ namespace RabbitTransfer.Consumer
             TConsumeModel model;
             try
             {
-                model = TransferModelFactory<TConsumeModel>.FromBytes(ea.Body);
+                model = TransferModel.TransferModelFactory<TConsumeModel>.FromBytes(ea.Body);
             }
             catch
             {

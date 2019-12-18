@@ -3,14 +3,14 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitTransfer.Interfaces;
 using RabbitTransfer.Producer;
+using RabbitTransfer.TransferModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static TransferModel;
 
-namespace RabbitTransfer.Consumer
+namespace RabbitTransfer.RPC
 {
     /// <summary>
     /// An Abstract IHostedService AMQP RPC Consumer with managed Start and Stop calls.

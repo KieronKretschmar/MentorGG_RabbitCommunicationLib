@@ -3,11 +3,13 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitTransfer.Consumer;
 using RabbitTransfer.Interfaces;
+using RabbitTransfer.Producer;
+using RabbitTransfer.TransferModels;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RabbitTransfer.Producer
+namespace RabbitTransfer.RPC
 {
 
     /// <summary>
@@ -17,7 +19,7 @@ namespace RabbitTransfer.Producer
     /// </summary>
     /// <typeparam name="TProduceModel">Transfer Model to produce</typeparam>
     /// <typeparam name="TConsumeModel">Transfer Model to consume</typeparam>
-    public abstract class RPCClient<TProduceModel, TConsumeModel> : 
+    public abstract class RPCClient<TProduceModel, TConsumeModel> :
     IRPCClient<TProduceModel, TConsumeModel>
 
         where TProduceModel : ITransferModel

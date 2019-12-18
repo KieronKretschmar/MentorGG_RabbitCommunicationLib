@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitTransfer.Interfaces;
+using RabbitTransfer.TransferModels;
 using System;
 using System.Text;
 using System.Threading;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace RabbitTransfer.Producer
 {
-    public class Producer<TProduceModel> : 
+    public class Producer<TProduceModel> :
     IProducer<TProduceModel>
-    
+
         where TProduceModel: ITransferModel
     {
         /// <summary>

@@ -1,6 +1,7 @@
 
 using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
+using RabbitTransfer.TransferModels;
 
 namespace RabbitTransfer.Interfaces
 {
