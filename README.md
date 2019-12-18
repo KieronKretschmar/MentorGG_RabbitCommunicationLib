@@ -128,7 +128,7 @@ using RabbitTransfer.Producer;
 
 class ExampleProducer : RPCProducer<DC_DD_Model, DD_DC_Model>
 {
-    public ExamplProducer(IQueueConnection queueConnection) : base(queueConnection) { }
+    public ExampleProducer(IQueueConnection queueConnection) : base(queueConnection) { }
 
 	protected override void HandleReply(IBasicProperties properties, DD_DC_Model model)
 	{
