@@ -1,4 +1,7 @@
-﻿using System;
+﻿using RabbitTransfer.Enums;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace RabbitTransfer.TransferModels
 {
@@ -7,8 +10,7 @@ namespace RabbitTransfer.TransferModels
         public string DownloadUrl { get; set; }
         public DateTime MatchDate { get; set; }
         public long UploaderId { get; set; }
-        public byte Source { get; set; }
-        public byte UploadType { get; set; }
-
+        public Source Source { get; set; }
+        public UploadType UploadType { get; set; }
     }
 }
