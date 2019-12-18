@@ -1,7 +1,10 @@
-﻿
-public class DD_DC_Model : TransferModel
+﻿namespace RabbitTransfer.TransferModels
 {
-    public string DemoUrl { get; set; }
+    public class DD_DC_Model : TransferModel
+    {
+        public string DemoUrl { get; set; }
 
-    public bool Success { get; set; }
+        public bool Success { get; set; }
+    }
 }
+    

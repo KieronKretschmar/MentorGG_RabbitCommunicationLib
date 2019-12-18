@@ -1,41 +1,45 @@
 ﻿using Newtonsoft.Json;
 using System.Text;
 
-public interface ITransferModel
+namespace RabbitTransfer.TransferModels
 {
-    byte[] ToBytes();
-    string ToJson();
-}
 
-public abstract class TransferModel : ITransferModel
-{
-    /// <summary>
-    /// Return this object as Json.
-    /// </summary>
-    public string ToJson()
+    public interface ITransferModel
     {
-        return JsonConvert.SerializeObject(this);
+        byte[] ToBytes();
+        string ToJson();
     }
 
-    /// <summary>
-    /// Return a Byte array of this object.
-    /// </summary>
-    public byte[] ToBytes()
+    public abstract class TransferModel : ITransferModel
     {
-        return Encoding.UTF8.GetBytes(ToJson());
-    }
-
-
-    public static class TransferModelFactory<TModel> where TModel: ITransferModel
-    {
-        public static TModel FromJson(string jsonString)
+        /// <summary>
+        /// Return this object as Json.
+        /// </summary>
+        public string ToJson()
         {
-            return JsonConvert.DeserializeObject<TModel>(jsonString);
+            return JsonConvert.SerializeObject(this);
         }
 
-        public static TModel FromBytes(byte[] bytes)
+        /// <summary>
+        /// Return a Byte array of this object.
+        /// </summary>
+        public byte[] ToBytes()
         {
-            return FromJson(Encoding.UTF8.GetString(bytes));
+            return Encoding.UTF8.GetBytes(ToJson());
+        }
+
+
+        public static class TransferModelFactory<TModel> where TModel: ITransferModel
+        {
+            public static TModel FromJson(string jsonString)
+            {
+                return JsonConvert.DeserializeObject<TModel>(jsonString);
+            }
+
+            public static TModel FromBytes(byte[] bytes)
+            {
+                return FromJson(Encoding.UTF8.GetString(bytes));
+            }
         }
     }
 }

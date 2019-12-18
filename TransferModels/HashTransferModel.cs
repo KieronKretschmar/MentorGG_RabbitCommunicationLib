@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-
-public class HashTransferModel : TransferModel
+﻿namespace RabbitTransfer.TransferModels
 {
-    public bool isDuplicate { get; set; }
+    public class HashTransferModel : TransferModel
+    {
+        public bool isDuplicate { get; set; }
+    }
 }
 
