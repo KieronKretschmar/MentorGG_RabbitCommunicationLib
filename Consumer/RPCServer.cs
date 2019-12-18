@@ -29,7 +29,7 @@ namespace RabbitTransfer.Consumer
         /// </summary>
         public RPCServer(
             IRPCQueueConnections queueConnections,
-            bool persistantMessageSending = true) : base(queueConnections, persistantMessageSending) { }
+            bool persistentMessageSending = true) : base(queueConnections, persistentMessageSending) { }
 
         /// <summary>
         /// Handle a message and publish a reply.
