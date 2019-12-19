@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RabbitTransfer.Enums;
+using System;
 
 namespace RabbitTransfer.TransferModels
 {
@@ -17,7 +18,7 @@ namespace RabbitTransfer.TransferModels
         public DC2DFWModel() { }
 
         public string DownloadUrl { get; set; }
-        public string Source { get; set; }
+        public Source Source { get; set; }
         public double FramesPerSecond { get; set; }
         public DateTime MatchDate { get; set; }
         public string Event { get; set; }

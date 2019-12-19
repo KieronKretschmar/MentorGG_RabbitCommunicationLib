@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace RabbitTransfer.TransferModels
-{
-    public class GathererTransferModel : TransferModel
+{    public class SCG_SWS_Model : TransferModel
     {
-        public string DownloadUrl { get; set; }
-        public DateTime MatchDate { get; set; }
         public long UploaderId { get; set; }
-        public Source Source { get; set; }
+        public string SharingCode { get; set; }
         public UploadType UploadType { get; set; }
     }
 }
+
