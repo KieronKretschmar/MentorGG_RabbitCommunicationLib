@@ -7,13 +7,13 @@ A library to assist in developing asycnronous micro-services using RabbitMQ with
 When creating a service you need to define at least one TransferModel that implements `ITransferModel`, 
 this is used for serialization and de-serialization of data.
 
-There are two models used, `TConsumeModel` and `TProduceModel` for message consumtion and production respectively.
+TransferModel types are referred to as `TConsumeModel` and `TProduceModel` for message consumption and production, respectively.
 
 ---
 
 ## Usage
 
-### 1. Establish a connection with a RabbitMQ Server.
+### Establish a connection with a RabbitMQ Server.
 
 A connection that implements `IQueueConnection` is required for all services - For standard use, instantiating the
 `QueueConnection` in `/helpers` is sufficient.
@@ -43,11 +43,11 @@ public static IHostBuilder CreateHostBuilder(string[] args) =>
 
 ---
 
-### 2. Create a Service ( Consumer || Producer )
+### Create a Service ( Consumer || Producer )
 
 #### Consumer
 
-A Consumer requires you to create a class that inherits from `Consumer<TConsumeModel` class 
+A Consumer requires you to create a class that inherits from `Consumer<TConsumeModel>` class 
 and overrides the `HandleMessage` method.
 
 You must supply a `TConsumeModel`.
@@ -74,7 +74,7 @@ A Producer can be instantiated without the need of a parent class.
 You must supply a `TProduceModel`.
 
 To produce a message:
-- Define a `correlationId<string>` (Usually MatchId)
+- Define a `correlationId<string>` (Usually MatchId or, if MatchId is not available, a randomly generated GUID)
 - Define a  `produceModel<TProduceModel>`
 
 ```csharp
@@ -92,7 +92,7 @@ using RabbitTransfer.Producer;
 
 ---
 
-### 2. Create a RPC Service ( RPCServer || RPCClient )
+### Create a RPC Service ( RPCServer || RPCClient )
 
 #### RPCServer
 
@@ -103,9 +103,10 @@ Instead of overidding the `HandleMessage` method, an RPCServer expects you to re
 ```csharp
 using RabbitTransfer.Consumer;
 
-class ExampleConsumer : RPCServer<DC_DD_Model, DD_DC_Model>
+class ExampleRPCServer : RPCServer<DC_DD_Model, DD_DC_Model>
 {
-    public ExampleConsumer(IQueueConnection queueConnection) : base(queueConnection) { }
+    public ExampleRPCServer(IQueueConnection queueConnection) : base(queueConnection) { }
+
 
 	protected override DD_DC_Model HandleMessageAndReply(IBasicProperties properties, DC_DD_Model model)
 	{
@@ -121,14 +122,15 @@ class ExampleConsumer : RPCServer<DC_DD_Model, DD_DC_Model>
 
 #### RPCClient
 
-An RPCClient has the similar requirements as the standard Producer but you must also specifiy a `TConsumeModel` for reply handling.
+An RPCClient has the similar requirements as the standard Producer but you must also specify a `TConsumeModel` for reply handling.
 
 ```csharp
 using RabbitTransfer.Producer;
 
-class ExampleProducer : RPCClient<DC_DD_Model, DD_DC_Model>
+class ExampleRPCClient : RPCClient<DC_DD_Model, DD_DC_Model>
 {
-    public ExampleProducer(IQueueConnection queueConnection) : base(queueConnection) { }
+    public ExampleRPCClient(IQueueConnection queueConnection) : base(queueConnection) { }
+
 
 	protected override void HandleReply(IBasicProperties properties, DD_DC_Model model)
 	{
@@ -138,7 +140,7 @@ class ExampleProducer : RPCClient<DC_DD_Model, DD_DC_Model>
 
 ```
 
-Invotation is the same as a standard producer.
+Invocation is the same as a standard producer.
 
 ```csharp
 
@@ -192,7 +194,6 @@ classDef queue fill:#EA6248;
 
 ```
 
-![RPC Pattern Description](https://www.rabbitmq.com/img/tutorials/python-six.png)
 
 
 	
