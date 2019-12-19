@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RabbitTransfer.Enums
 {
-    public enum UploadType
+    public enum UploadType : byte
     {
         Unknown = 0,
         Extension = 1,
