@@ -156,10 +156,37 @@ Invocation is the same as a standard producer.
 
 ---
 
+### Add Services to your application
 
-# Diagrams
+After creating the application-specific implementation of a Rabbit service,
+It can be added as a `IHostedServer` with the `AddHostedService()` method.
 
-## Basic Rabbit Exchange
+**Dependency Injection**: Use the `IServiceProvider` inside your Implementation Factory to inject existing services 
+such as `ILogger` in your implementation.
+
+```csharp
+
+public static IHostBuilder CreateHostBuilder(string[] args) =>
+	Host.CreateDefaultBuilder(args)
+		.ConfigureServices((hostContext, services) =>
+		{
+
+		...
+
+		services.AddHostedService(sp =>
+			{
+				// Use the pre-existing connection defined from earlier
+				return new FooService(connection);
+			}
+		);
+
+		...
+```
+
+
+## Diagrams
+
+### Basic Rabbit Exchange
  ```mermaid
 	graph LR
     A((Publisher)) --> B{Exchange}
@@ -174,7 +201,7 @@ classDef publisher fill:#84EBFD;
 
  ```
 
-## RPC Pattern
+### RPC Pattern
 
 ```mermaid
 graph LR
