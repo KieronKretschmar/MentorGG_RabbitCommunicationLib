@@ -92,18 +92,18 @@ using RabbitTransfer.Producer;
 
 ---
 
-### 2. Create a RPC Service ( RPCConsumer || RPCProducer )
+### 2. Create a RPC Service ( RPCServer || RPCClient )
 
-#### RPCConsumer
+#### RPCServer
 
-An RPCConsumer has the similar requirements as the standard Consumer but you must also specifiy a `TProduceModel` for replies.
+An RPCServer has the similar requirements as the standard Consumer but you must also specifiy a `TProduceModel` for replies.
 
-Instead of overidding the `HandleMessage` method, an RPCConsumer expects you to return a reply of type `TProduceModel` using `HandleMessageAndReply`
+Instead of overidding the `HandleMessage` method, an RPCServer expects you to return a reply of type `TProduceModel` using `HandleMessageAndReply`
 
 ```csharp
 using RabbitTransfer.Consumer;
 
-class ExampleConsumer : RPCConsumer<DC_DD_Model, DD_DC_Model>
+class ExampleConsumer : RPCServer<DC_DD_Model, DD_DC_Model>
 {
     public ExampleConsumer(IQueueConnection queueConnection) : base(queueConnection) { }
 
@@ -119,14 +119,14 @@ class ExampleConsumer : RPCConsumer<DC_DD_Model, DD_DC_Model>
 
 ```
 
-#### RPCProducer
+#### RPCClient
 
-An RPCConsumer has the similar requirements as the standard Producer but you must also specifiy a `TConsumeModel` for reply handling.
+An RPCClient has the similar requirements as the standard Producer but you must also specifiy a `TConsumeModel` for reply handling.
 
 ```csharp
 using RabbitTransfer.Producer;
 
-class ExampleProducer : RPCProducer<DC_DD_Model, DD_DC_Model>
+class ExampleProducer : RPCClient<DC_DD_Model, DD_DC_Model>
 {
     public ExampleProducer(IQueueConnection queueConnection) : base(queueConnection) { }
 
