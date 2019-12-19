@@ -4,11 +4,11 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitTransfer;
 using RabbitTransfer.Interfaces;
+using RabbitTransfer.TransferModels;
 using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static TransferModel;
 
 namespace RabbitTransfer.Consumer
 {
@@ -16,7 +16,10 @@ namespace RabbitTransfer.Consumer
     /// An Abstract IHostedService AMQP Consumer with managed Start and Stop calls.
     /// </summary>
     /// <typeparam name="TConsumeModel">Tranfer Model to consume.</typeparam>
-    public abstract class Consumer<TConsumeModel> : IHostedService where TConsumeModel: ITransferModel
+    public abstract class Consumer<TConsumeModel> :
+    IConsumer<TConsumeModel>
+
+        where TConsumeModel : ITransferModel
     {
         /// <summary>
         /// Connection to the AMQP Rabbit Instance.
@@ -47,8 +50,19 @@ namespace RabbitTransfer.Consumer
         /// </summary>
         /// <param name="properties">AMQP Properties</param>
         /// <param name="model">Received message</param>
-        protected abstract void HandleMessage(IBasicProperties properties, TConsumeModel model);
+        public abstract void HandleMessage(IBasicProperties properties, TConsumeModel model);
 
+
+        /// <summary>
+        /// Basic Acknowledge a message
+        /// </summary>
+        /// <param name="ea">Event Arguments</param>
+        protected virtual void BasicAcknowledge(BasicDeliverEventArgs ea)
+        {
+            channel.BasicAck(
+                    deliveryTag: ea.DeliveryTag,
+                    multiple: false);
+        }
 
         /// <summary>
         /// Handle the event if a Rabbit consumer receives a message.
@@ -57,15 +71,34 @@ namespace RabbitTransfer.Consumer
         /// <param name="ea">Event Arguments</param>
         protected virtual void OnConsumerReceived(IModel channel, BasicDeliverEventArgs ea)
         {
-            // Let the overidden method handle the message and return a response.
+            // If a model cannot be obtained from the body,
+            // acknowledge the message as no work can be done with an invalid model..
+            TConsumeModel model;
+            try
+            {
+                model = TransferModel.TransferModelFactory<TConsumeModel>.FromBytes(ea.Body);
+            }
+            catch
+            {
+                BasicAcknowledge(ea);
+                throw;
+            }
 
-            HandleMessage(
-                ea.BasicProperties,
-                TransferModelFactory<TConsumeModel>.FromBytes(ea.Body));
+            // If a message was Redelivered, acknowledge before handling,
 
-            channel.BasicAck(
-                deliveryTag: ea.DeliveryTag,
-                multiple: false);
+            // WARNING: If the application crashes, the message will be acknowledged
+            //          and will not be resent.
+            if (ea.Redelivered)
+            {
+                BasicAcknowledge(ea);
+                HandleMessage(ea.BasicProperties, model);
+            }
+            // If a message has not been Redilivered attempt to handle it, then acknowledge.
+            else
+            {
+                HandleMessage(ea.BasicProperties, model);
+                BasicAcknowledge(ea);
+            }
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -73,7 +106,7 @@ namespace RabbitTransfer.Consumer
             channel = _queueConnection.Connection.CreateModel();
 
             channel.QueueDeclare(
-                queue: _queueConnection.QueueName,
+                queue: _queueConnection.Queue,
                 durable: true,
                 exclusive: false,
                 autoDelete: false);
@@ -84,7 +117,7 @@ namespace RabbitTransfer.Consumer
             consumer.Received += (model, ea) => OnConsumerReceived(channel, ea);
 
             channel.BasicConsume(
-                queue: _queueConnection.QueueName,
+                queue: _queueConnection.Queue,
                 autoAck: false,
                 consumer: consumer);
 
@@ -93,13 +126,13 @@ namespace RabbitTransfer.Consumer
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
-            channel.ModelShutdown += (sender, ea) => {
-                consumer.HandleModelShutdown((IModel)sender, ea);
+            channel.ModelShutdown += (sender, ea) =>
+            {
+                consumer.HandleModelShutdown((IModel) sender, ea);
             };
 
             channel.Dispose();
             _queueConnection.Connection.Dispose();
-
             await Task.CompletedTask;
         }
     }

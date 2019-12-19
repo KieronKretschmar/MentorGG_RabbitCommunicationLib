@@ -1,6 +1,10 @@
-﻿public class AnalyzerTransferModel : TransferModel
+﻿
+namespace RabbitTransfer.TransferModels
 {
-    public bool Success { get; set; }
+    public class AnalyzerTransferModel : TransferModel
+    {
+        public bool Success { get; set; }
 
-    public string AnalyzerVersion { get; set; }
+        public string AnalyzerVersion { get; set; }
+    }
 }
