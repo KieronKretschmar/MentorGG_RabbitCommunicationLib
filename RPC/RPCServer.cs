@@ -42,7 +42,7 @@ namespace RabbitTransfer.RPC
         public override async Task HandleMessageAsync(IBasicProperties properties, TConsumeModel model)
         {
             // Call the abstract method
-            TProduceModel replyModel = await HandleMessageAndReply(properties, model);
+            TProduceModel replyModel = await HandleMessageAndReply(properties, model).ConfigureAwait(false);
             // Publish the reply.
             PublishMessage(properties.CorrelationId, replyModel);
         }

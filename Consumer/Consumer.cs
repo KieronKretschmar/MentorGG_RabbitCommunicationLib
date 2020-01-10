@@ -91,12 +91,12 @@ namespace RabbitTransfer.Consumer
             if (ea.Redelivered)
             {
                 BasicAcknowledge(ea);
-                await HandleMessageAsync(ea.BasicProperties, model);
+                await HandleMessageAsync(ea.BasicProperties, model).ConfigureAwait(false);
             }
             // If a message has not been Redilivered attempt to handle it, then acknowledge.
             else
             {
-                await HandleMessageAsync(ea.BasicProperties, model);
+                await HandleMessageAsync(ea.BasicProperties, model).ConfigureAwait(false);
                 BasicAcknowledge(ea);
             }
         }
@@ -114,7 +114,7 @@ namespace RabbitTransfer.Consumer
             consumer = new EventingBasicConsumer(channel);
 
             // Subscribe to the Consumer Received event.
-            consumer.Received += async (model, ea) => await OnConsumerReceivedAsync(channel, ea);
+            consumer.Received += async (model, ea) => await OnConsumerReceivedAsync(channel, ea).ConfigureAwait(false);
 
             channel.BasicConsume(
                 queue: _queueConnection.Queue,
@@ -131,7 +131,7 @@ namespace RabbitTransfer.Consumer
 
             channel.Dispose();
             _queueConnection.Connection.Dispose();
-            await Task.CompletedTask;
+            await Task.CompletedTask.ConfigureAwait(false);
         }
     }
 }

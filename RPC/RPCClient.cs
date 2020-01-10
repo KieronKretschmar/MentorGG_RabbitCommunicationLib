@@ -65,14 +65,14 @@ namespace RabbitTransfer.RPC
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await producer.StartAsync(cancellationToken);
-            await consumer.StartAsync(cancellationToken);
+            await producer.StartAsync(cancellationToken).ConfigureAwait(false);
+            await consumer.StartAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
-            await producer.StopAsync(cancellationToken);
-            await consumer.StopAsync(cancellationToken);
+            await producer.StopAsync(cancellationToken).ConfigureAwait(false);
+            await consumer.StopAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 }

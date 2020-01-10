@@ -34,7 +34,7 @@ namespace RabbitTransfer.Consumer
 
         public override async Task HandleMessageAsync(IBasicProperties properties, TConsumeModel model)
         {
-            await _handleMessageAction(properties, model);
+            await _handleMessageAction(properties, model).ConfigureAwait(false);
         }
     }
 }
