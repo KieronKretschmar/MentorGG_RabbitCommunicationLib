@@ -50,7 +50,7 @@ namespace RabbitTransfer.Consumer
         /// </summary>
         /// <param name="properties">AMQP Properties</param>
         /// <param name="model">Received message</param>
-        public abstract void HandleMessage(IBasicProperties properties, TConsumeModel model);
+        public abstract Task HandleMessageAsync(IBasicProperties properties, TConsumeModel model);
 
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace RabbitTransfer.Consumer
         /// </summary>
         /// <param name="channel">AMQP Connection channel</param>
         /// <param name="ea">Event Arguments</param>
-        protected virtual void OnConsumerReceived(IModel channel, BasicDeliverEventArgs ea)
+        protected virtual async Task OnConsumerReceivedAsync(IModel channel, BasicDeliverEventArgs ea)
         {
             // If a model cannot be obtained from the body,
             // acknowledge the message as no work can be done with an invalid model..
@@ -91,12 +91,12 @@ namespace RabbitTransfer.Consumer
             if (ea.Redelivered)
             {
                 BasicAcknowledge(ea);
-                HandleMessage(ea.BasicProperties, model);
+                await HandleMessageAsync(ea.BasicProperties, model);
             }
             // If a message has not been Redilivered attempt to handle it, then acknowledge.
             else
             {
-                HandleMessage(ea.BasicProperties, model);
+                await HandleMessageAsync(ea.BasicProperties, model);
                 BasicAcknowledge(ea);
             }
         }
@@ -114,14 +114,12 @@ namespace RabbitTransfer.Consumer
             consumer = new EventingBasicConsumer(channel);
 
             // Subscribe to the Consumer Received event.
-            consumer.Received += (model, ea) => OnConsumerReceived(channel, ea);
+            consumer.Received += async (model, ea) => await OnConsumerReceivedAsync(channel, ea);
 
             channel.BasicConsume(
                 queue: _queueConnection.Queue,
                 autoAck: false,
                 consumer: consumer);
-
-            await Task.CompletedTask;
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

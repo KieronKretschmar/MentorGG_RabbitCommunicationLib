@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitTransfer.TransferModels;
+using System.Threading.Tasks;
 
 namespace RabbitTransfer.Interfaces
 {
@@ -14,6 +15,6 @@ namespace RabbitTransfer.Interfaces
         /// </summary>
         /// <param name="properties">AMQP Properties</param>
         /// <param name="model">Received message</param>
-        void HandleMessage(IBasicProperties properties, TConsumeModel model);
+        Task HandleMessageAsync(IBasicProperties properties, TConsumeModel model);
     }
 }

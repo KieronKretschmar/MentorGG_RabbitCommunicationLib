@@ -43,7 +43,7 @@ namespace RabbitTransfer.RPC
 
             consumer = new ActionConsumer<TConsumeModel>(
                 queueConnections.ConsumeConnection,
-                HandleMessage);
+                HandleMessageAsync);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace RabbitTransfer.RPC
         /// </summary>
         /// <param name="properties">headers of the message</param>
         /// <param name="consumeModel">Transfer Model of the message</param>
-        public abstract void HandleMessage(IBasicProperties properties, TConsumeModel consumeModel);
+        public abstract Task HandleMessageAsync(IBasicProperties properties, TConsumeModel consumeModel);
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
