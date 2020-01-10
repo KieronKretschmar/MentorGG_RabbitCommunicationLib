@@ -12,5 +12,7 @@ namespace RabbitTransfer.Enums
         ManualUpload = 3,
         Scrimmage = 4,
         HLTV = 5,
+        Esea = 6,
+        Cevo = 7,
     }
 }
