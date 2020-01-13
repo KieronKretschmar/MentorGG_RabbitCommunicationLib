@@ -1,6 +1,7 @@
 
 using RabbitMQ.Client;
 using RabbitTransfer.TransferModels;
+using System.Threading.Tasks;
 
 namespace RabbitTransfer.Interfaces
 {
@@ -16,6 +17,6 @@ namespace RabbitTransfer.Interfaces
         /// </summary>
         /// <param name="properties">AMQP Properties</param>
         /// <param name="model">Received message</param>
-        TProduceModel HandleMessageAndReply(IBasicProperties properties, TConsumeModel model);
+        Task<TProduceModel> HandleMessageAndReply(IBasicProperties properties, TConsumeModel model);
     }
 }
