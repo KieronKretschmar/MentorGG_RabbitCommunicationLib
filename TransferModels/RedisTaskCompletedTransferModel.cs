@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RabbitTransfer.TransferModels
+namespace RabbitCommunicationLib.TransferModels
 {
     public class RedisTaskCompletedTransferModel : TaskCompletedTransferModel
     {

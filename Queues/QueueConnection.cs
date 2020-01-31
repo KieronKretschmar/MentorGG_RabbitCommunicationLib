@@ -1,8 +1,8 @@
 ﻿using RabbitMQ.Client;
-using RabbitTransfer.Interfaces;
+using RabbitCommunicationLib.Interfaces;
 using System;
 
-namespace RabbitTransfer.Queues
+namespace RabbitCommunicationLib.Queues
 {
     internal static class ConnectionFactoryHelper
     {

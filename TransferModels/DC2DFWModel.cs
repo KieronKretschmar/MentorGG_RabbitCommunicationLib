@@ -1,7 +1,7 @@
-﻿using RabbitTransfer.Enums;
+﻿using RabbitCommunicationLib.Enums;
 using System;
 
-namespace RabbitTransfer.TransferModels
+namespace RabbitCommunicationLib.TransferModels
 {
 
     public class DC2DFWModel : TransferModel

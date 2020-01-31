@@ -1,12 +1,12 @@
 ﻿using RabbitMQ.Client;
-using RabbitTransfer.Interfaces;
-using RabbitTransfer.TransferModels;
+using RabbitCommunicationLib.Interfaces;
+using RabbitCommunicationLib.TransferModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RabbitTransfer.Consumer
+namespace RabbitCommunicationLib.Consumer
 {
     /// <summary>
     /// Provide a concrete implementation of a consumer so the <see cref="Consumer{TConsumeModel}.HandleMessageAsync(IBasicProperties, TConsumeModel)"/> function can be overwritten

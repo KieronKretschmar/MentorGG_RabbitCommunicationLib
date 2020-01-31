@@ -1,8 +1,8 @@
 
 using Microsoft.Extensions.Hosting;
-using RabbitTransfer.TransferModels;
+using RabbitCommunicationLib.TransferModels;
 
-namespace RabbitTransfer.Interfaces
+namespace RabbitCommunicationLib.Interfaces
 {
     public interface IProducer<TProduceModel>: IHostedService
 

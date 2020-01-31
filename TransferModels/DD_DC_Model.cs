@@ -1,4 +1,4 @@
-﻿namespace RabbitTransfer.TransferModels
+﻿namespace RabbitCommunicationLib.TransferModels
 {
     public class DD_DC_Model : TransferModel
     {

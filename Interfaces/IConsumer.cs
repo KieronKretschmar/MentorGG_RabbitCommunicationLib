@@ -1,10 +1,10 @@
 
 using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
-using RabbitTransfer.TransferModels;
+using RabbitCommunicationLib.TransferModels;
 using System.Threading.Tasks;
 
-namespace RabbitTransfer.Interfaces
+namespace RabbitCommunicationLib.Interfaces
 {
     public interface IConsumer<TConsumeModel>: IHostedService
 

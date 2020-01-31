@@ -1,5 +1,5 @@
 ﻿
-namespace RabbitTransfer.TransferModels
+namespace RabbitCommunicationLib.TransferModels
 {
     public class TaskCompletedTransferModel : TransferModel
     {

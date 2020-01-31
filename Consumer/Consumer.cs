@@ -2,15 +2,15 @@
 using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using RabbitTransfer;
-using RabbitTransfer.Interfaces;
-using RabbitTransfer.TransferModels;
+using RabbitCommunicationLib;
+using RabbitCommunicationLib.Interfaces;
+using RabbitCommunicationLib.TransferModels;
 using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RabbitTransfer.Consumer
+namespace RabbitCommunicationLib.Consumer
 {
     /// <summary>
     /// An Abstract IHostedService AMQP Consumer with managed Start and Stop calls.

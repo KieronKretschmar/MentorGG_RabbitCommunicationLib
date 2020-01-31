@@ -1,9 +1,9 @@
 
 using RabbitMQ.Client;
-using RabbitTransfer.TransferModels;
+using RabbitCommunicationLib.TransferModels;
 using System.Threading.Tasks;
 
-namespace RabbitTransfer.Interfaces
+namespace RabbitCommunicationLib.Interfaces
 {
     public interface IRPCServer<TConsumeModel ,TProduceModel>:
     IProducer<TProduceModel>,

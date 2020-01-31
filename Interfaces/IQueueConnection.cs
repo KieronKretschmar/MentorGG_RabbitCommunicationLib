@@ -2,7 +2,7 @@
 using RabbitMQ.Client;
 using System;
 
-namespace RabbitTransfer.Interfaces
+namespace RabbitCommunicationLib.Interfaces
 {
     public interface IQueueConnection
     {

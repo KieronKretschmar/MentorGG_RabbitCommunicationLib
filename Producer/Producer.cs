@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
-using RabbitTransfer.Interfaces;
-using RabbitTransfer.TransferModels;
+using RabbitCommunicationLib.Interfaces;
+using RabbitCommunicationLib.TransferModels;
 using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RabbitTransfer.Producer
+namespace RabbitCommunicationLib.Producer
 {
     public class Producer<TProduceModel> :
     IProducer<TProduceModel>

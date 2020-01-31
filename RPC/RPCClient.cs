@@ -1,15 +1,15 @@
 ﻿using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using RabbitTransfer.Consumer;
-using RabbitTransfer.Interfaces;
-using RabbitTransfer.Producer;
-using RabbitTransfer.TransferModels;
+using RabbitCommunicationLib.Consumer;
+using RabbitCommunicationLib.Interfaces;
+using RabbitCommunicationLib.Producer;
+using RabbitCommunicationLib.TransferModels;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RabbitTransfer.RPC
+namespace RabbitCommunicationLib.RPC
 {
 
     /// <summary>
