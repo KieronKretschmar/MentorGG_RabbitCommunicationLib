@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitTransfer", "RabbitTransfer.csproj", "{2D9FCA83-C369-4F06-9DD8-8B25F50969FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitCommunicationLib", "RabbitCommunicationLib.csproj", "{2D9FCA83-C369-4F06-9DD8-8B25F50969FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,3 +23,4 @@ Global
 		SolutionGuid = {14012752-B639-4E3C-8D6E-F7889469E5A6}
 	EndGlobalSection
 EndGlobal
+
