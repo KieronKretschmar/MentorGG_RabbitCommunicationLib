@@ -42,7 +42,7 @@ namespace RabbitTransfer.RPC
         public override async Task HandleMessageAsync(IBasicProperties properties, TConsumeModel model)
         {
             // Call the abstract method
-            TProduceModel replyModel = await HandleMessageAndReply(properties, model).ConfigureAwait(false);
+            TProduceModel replyModel = await HandleMessageAndReplyAsync(properties, model).ConfigureAwait(false);
             // Publish the reply.
             PublishMessage(properties.CorrelationId, replyModel);
         }
@@ -52,7 +52,7 @@ namespace RabbitTransfer.RPC
         /// </summary>
         /// <param name="properties">AMQP Properties</param>
         /// <param name="model">Received message</param>
-        public abstract Task<TProduceModel> HandleMessageAndReply(IBasicProperties properties, TConsumeModel model);
+        public abstract Task<TProduceModel> HandleMessageAndReplyAsync(IBasicProperties properties, TConsumeModel model);
 
     }
 }

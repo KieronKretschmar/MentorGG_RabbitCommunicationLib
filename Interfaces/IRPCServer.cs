@@ -17,6 +17,6 @@ namespace RabbitTransfer.Interfaces
         /// </summary>
         /// <param name="properties">AMQP Properties</param>
         /// <param name="model">Received message</param>
-        Task<TProduceModel> HandleMessageAndReply(IBasicProperties properties, TConsumeModel model);
+        Task<TProduceModel> HandleMessageAndReplyAsync(IBasicProperties properties, TConsumeModel model);
     }
 }
