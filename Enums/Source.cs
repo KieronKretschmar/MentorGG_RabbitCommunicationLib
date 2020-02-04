@@ -6,7 +6,7 @@ namespace RabbitCommunicationLib.Enums
 {
 
     /// <summary>
-    /// Copied from MatchEntities. Keep in sync when applying changes to either of them.
+    /// Copied from MatchEntities and EquipmentLib. Keep in sync when applying changes to either of them.
     /// </summary>
     public enum Source : byte
     {
