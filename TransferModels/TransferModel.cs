@@ -42,4 +42,9 @@ namespace RabbitCommunicationLib.TransferModels
             }
         }
     }
+
+    public class NullTransferModel : TransferModel
+    {
+
+    } 
 }
