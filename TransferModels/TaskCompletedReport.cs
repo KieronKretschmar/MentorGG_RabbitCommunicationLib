@@ -1,7 +1,7 @@
 ﻿
 namespace RabbitCommunicationLib.TransferModels
 {
-    public class TaskCompletedTransferModel : TransferModel
+    public class TaskCompletedReport : TransferModel
     {
         /// <summary>
         /// Whether the task was completed successfully.

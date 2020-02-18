@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace RabbitCommunicationLib.TransferModels
-{    public class SCG_SWS_Model : TransferModel
+{    public class SteamInfoInstructions : TransferModel
     {
         public long UploaderId { get; set; }
         public string SharingCode { get; set; }

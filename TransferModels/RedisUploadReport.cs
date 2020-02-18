@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RabbitCommunicationLib.TransferModels
 {
-    public class RedisTaskCompletedTransferModel : TaskCompletedTransferModel
+    public class RedisUploadReport : TaskCompletedReport
     {
         public string RedisKey { get; set; }
         public DateTime ExpiryDate { get; set; }
