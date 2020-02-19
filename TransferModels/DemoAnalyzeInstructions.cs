@@ -5,7 +5,7 @@ using System;
 namespace RabbitCommunicationLib.TransferModels
 {
 
-    public class DemoAnalyzerInstructions : TransferModel
+    public class DemoAnalyzeInstructions : TransferModel
     {
         public Source Source { get; set; }
         public double FramesPerSecond { get; set; }

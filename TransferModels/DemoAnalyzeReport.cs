@@ -1,7 +1,7 @@
 ﻿namespace RabbitCommunicationLib.TransferModels
 {
 
-    public class DemoAnalyzerReport : TaskCompletedReport
+    public class DemoAnalyzeReport : TaskCompletedReport
     {
         public bool Unzipped { get; set; } = false;
         public bool DuplicateChecked { get; set; } = false;
