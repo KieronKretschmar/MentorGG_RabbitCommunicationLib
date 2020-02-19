@@ -50,7 +50,7 @@ namespace RabbitCommunicationLib.Consumer
         /// </summary>
         /// <param name="properties">AMQP Properties</param>
         /// <param name="model">Received message</param>
-        public abstract Task HandleMessageAsync(IBasicProperties properties, TConsumeModel model);
+        public abstract Task HandleMessageAsync(BasicDeliverEventArgs ea, TConsumeModel model);
 
 
         /// <summary>
@@ -62,6 +62,19 @@ namespace RabbitCommunicationLib.Consumer
             channel.BasicAck(
                     deliveryTag: ea.DeliveryTag,
                     multiple: false);
+        }
+
+        /// <summary>
+        /// BasicNacks a message, indicating failure to process it.
+        /// </summary>
+        /// <param name="ea"></param>
+        /// <param name="requeue">Whether the message should be requeued.</param>
+        protected virtual void BasicNack(BasicDeliverEventArgs ea, bool requeue)
+        {
+            channel.BasicNack(
+                    deliveryTag: ea.DeliveryTag,
+                    multiple: false,
+                    requeue: requeue);
         }
 
         /// <summary>
@@ -91,12 +104,12 @@ namespace RabbitCommunicationLib.Consumer
             if (ea.Redelivered)
             {
                 BasicAcknowledge(ea);
-                await HandleMessageAsync(ea.BasicProperties, model).ConfigureAwait(false);
+                await HandleMessageAsync(ea, model).ConfigureAwait(false);
             }
             // If a message has not been Redilivered attempt to handle it, then acknowledge.
             else
             {
-                await HandleMessageAsync(ea.BasicProperties, model).ConfigureAwait(false);
+                await HandleMessageAsync(ea, model).ConfigureAwait(false);
                 BasicAcknowledge(ea);
             }
         }

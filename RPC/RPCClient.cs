@@ -61,7 +61,7 @@ namespace RabbitCommunicationLib.RPC
         /// </summary>
         /// <param name="properties">headers of the message</param>
         /// <param name="consumeModel">Transfer Model of the message</param>
-        public abstract Task HandleMessageAsync(IBasicProperties properties, TConsumeModel consumeModel);
+        public abstract Task HandleMessageAsync(BasicDeliverEventArgs ea, TConsumeModel consumeModel);
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
