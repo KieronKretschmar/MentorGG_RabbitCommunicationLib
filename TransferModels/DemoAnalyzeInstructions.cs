@@ -10,7 +10,7 @@ namespace RabbitCommunicationLib.TransferModels
         public Source Source { get; set; }
         public double FramesPerSecond { get; set; }
         public DateTime MatchDate { get; set; }
-        public string ZippedFilePath { get; set; }
+        public string BlobURI { get; set; }
         public AnalyzerQuality Quality { get; set; }
     }
 }
