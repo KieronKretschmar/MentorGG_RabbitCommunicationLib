@@ -4,7 +4,7 @@ using RabbitCommunicationLib.TransferModels;
 
 namespace RabbitCommunicationLib.Interfaces
 {
-    public interface IProducer<TProduceModel>: IHostedService
+    public interface IProducer<TProduceModel>
 
         where TProduceModel: ITransferModel
     {
