@@ -72,5 +72,7 @@ namespace RabbitCommunicationLib.RPC
         {
             await consumer.StopAsync(cancellationToken).ConfigureAwait(false);
         }
+
+        public void Dispose() => producer.Dispose();
     }
 }

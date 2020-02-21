@@ -49,6 +49,7 @@ namespace RabbitCommunicationLib.Producer
                 autoDelete: false);
         }
 
+
         /// <summary>
         /// Publish a message to the Queue Channel.
         /// </summary>
@@ -68,6 +69,11 @@ namespace RabbitCommunicationLib.Producer
                 routingKey: _queueConnection.Queue,
                 basicProperties: props,
                 body: messageBody);
+        }
+
+        public void Dispose()
+        {
+            channel.Dispose();
         }
     }
 }
