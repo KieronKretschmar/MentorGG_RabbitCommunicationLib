@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RabbitCommunicationLib.TransferModels
 {
-    public class GathererTransferModel : TransferModel
+    public class DemoEntryInstructions : TransferModel
     {
         public string DownloadUrl { get; set; }
         public DateTime MatchDate { get; set; }
