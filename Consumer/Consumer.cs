@@ -135,7 +135,7 @@ namespace RabbitCommunicationLib.Consumer
             catch
             {
                 BasicAcknowledge(ea);
-                throw;
+                return;
             }
 
             // Try handling the message and ack/nack it

@@ -39,7 +39,16 @@ namespace RabbitCommunicationLib.Producer
         {
             _queueConnection = queueConnection;
             _persistentMessageSending = persistentMessageSending;
+
+
+            channel = _queueConnection.Connection.CreateModel();
+            channel.QueueDeclare(
+                queue: _queueConnection.Queue,
+                durable: true,
+                exclusive: false,
+                autoDelete: false);
         }
+
 
         /// <summary>
         /// Publish a message to the Queue Channel.
@@ -62,24 +71,9 @@ namespace RabbitCommunicationLib.Producer
                 body: messageBody);
         }
 
-        public async Task StartAsync(CancellationToken cancellationToken)
-        {
-            channel = _queueConnection.Connection.CreateModel();
-
-            channel.QueueDeclare(
-                queue: _queueConnection.Queue,
-                durable: true,
-                exclusive: false,
-                autoDelete: false);
-
-            await Task.CompletedTask;
-        }
-
-        public async Task StopAsync(CancellationToken cancellationToken)
+        public void Dispose()
         {
             channel.Dispose();
-            _queueConnection.Connection.Dispose();
-            await Task.CompletedTask;
         }
     }
 }
