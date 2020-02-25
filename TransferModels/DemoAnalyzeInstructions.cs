@@ -1,5 +1,4 @@
-﻿using RabbitCommunicationLib.Enumerals;
-using RabbitCommunicationLib.Enums;
+﻿using RabbitCommunicationLib.Enums;
 using System;
 
 namespace RabbitCommunicationLib.TransferModels

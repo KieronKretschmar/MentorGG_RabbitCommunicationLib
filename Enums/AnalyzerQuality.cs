@@ -1,4 +1,4 @@
-﻿namespace RabbitCommunicationLib.Enumerals
+﻿namespace RabbitCommunicationLib.Enums
 {
     /// <summary>
     /// Also used in other repos. Please update accordingly.
