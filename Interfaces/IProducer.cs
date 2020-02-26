@@ -1,10 +1,11 @@
 
 using Microsoft.Extensions.Hosting;
-using RabbitTransfer.TransferModels;
+using RabbitCommunicationLib.TransferModels;
+using System;
 
-namespace RabbitTransfer.Interfaces
+namespace RabbitCommunicationLib.Interfaces
 {
-    public interface IProducer<TProduceModel>: IHostedService
+    public interface IProducer<TProduceModel> : IDisposable
 
         where TProduceModel: ITransferModel
     {

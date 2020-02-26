@@ -1,8 +1,10 @@
 
 using RabbitMQ.Client;
-using RabbitTransfer.TransferModels;
+using RabbitCommunicationLib.TransferModels;
+using System.Threading.Tasks;
+using RabbitMQ.Client.Events;
 
-namespace RabbitTransfer.Interfaces
+namespace RabbitCommunicationLib.Interfaces
 {
     public interface IRPCServer<TConsumeModel ,TProduceModel>:
     IProducer<TProduceModel>,
@@ -16,6 +18,6 @@ namespace RabbitTransfer.Interfaces
         /// </summary>
         /// <param name="properties">AMQP Properties</param>
         /// <param name="model">Received message</param>
-        TProduceModel HandleMessageAndReply(IBasicProperties properties, TConsumeModel model);
+        Task<TProduceModel> HandleMessageAndReplyAsync(BasicDeliverEventArgs ea, TConsumeModel model);
     }
 }

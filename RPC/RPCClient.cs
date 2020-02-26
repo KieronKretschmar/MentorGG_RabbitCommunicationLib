@@ -1,15 +1,15 @@
 ﻿using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using RabbitTransfer.Consumer;
-using RabbitTransfer.Interfaces;
-using RabbitTransfer.Producer;
-using RabbitTransfer.TransferModels;
+using RabbitCommunicationLib.Consumer;
+using RabbitCommunicationLib.Interfaces;
+using RabbitCommunicationLib.Producer;
+using RabbitCommunicationLib.TransferModels;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RabbitTransfer.RPC
+namespace RabbitCommunicationLib.RPC
 {
 
     /// <summary>
@@ -43,7 +43,7 @@ namespace RabbitTransfer.RPC
 
             consumer = new ActionConsumer<TConsumeModel>(
                 queueConnections.ConsumeConnection,
-                HandleMessage);
+                HandleMessageAsync);
         }
 
         /// <summary>
@@ -61,18 +61,18 @@ namespace RabbitTransfer.RPC
         /// </summary>
         /// <param name="properties">headers of the message</param>
         /// <param name="consumeModel">Transfer Model of the message</param>
-        public abstract void HandleMessage(IBasicProperties properties, TConsumeModel consumeModel);
+        public abstract Task HandleMessageAsync(BasicDeliverEventArgs ea, TConsumeModel consumeModel);
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await producer.StartAsync(cancellationToken);
-            await consumer.StartAsync(cancellationToken);
+            await consumer.StartAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
-            await producer.StopAsync(cancellationToken);
-            await consumer.StopAsync(cancellationToken);
+            await consumer.StopAsync(cancellationToken).ConfigureAwait(false);
         }
+
+        public void Dispose() => producer.Dispose();
     }
 }

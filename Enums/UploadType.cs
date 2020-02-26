@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RabbitTransfer.Enums
+namespace RabbitCommunicationLib.Enums
 {
     public enum UploadType : byte
     {

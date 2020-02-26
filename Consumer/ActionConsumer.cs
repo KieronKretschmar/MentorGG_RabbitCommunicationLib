@@ -1,14 +1,16 @@
 ﻿using RabbitMQ.Client;
-using RabbitTransfer.Interfaces;
-using RabbitTransfer.TransferModels;
+using RabbitCommunicationLib.Interfaces;
+using RabbitCommunicationLib.TransferModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using RabbitMQ.Client.Events;
 
-namespace RabbitTransfer.Consumer
+namespace RabbitCommunicationLib.Consumer
 {
     /// <summary>
-    /// Provide a concrete implementation of a consumer so the <see cref="Consumer{TConsumeModel}.HandleMessage(IBasicProperties, TConsumeModel)"/> function can be overwritten
+    /// Provide a concrete implementation of a consumer so the <see cref="Consumer{TConsumeModel}.HandleMessageAsync(BasicDeliverEventArgs, TConsumeModel)"/> function can be overwritten
     /// </summary>
     /// <typeparam name="TConsumeModel"></typeparam>
     public class ActionConsumer<TConsumeModel> :
@@ -19,21 +21,21 @@ namespace RabbitTransfer.Consumer
         /// <summary>
         /// Store the function which handles the received message
         /// </summary>
-        private readonly Action<IBasicProperties, TConsumeModel> _handleMessageAction;
+        private readonly Func<BasicDeliverEventArgs, TConsumeModel, Task> _handleMessageAction;
 
         /// <summary>
-        /// Create a Consumer, which <see cref="HandleMessage(IBasicProperties, TConsumeModel)"/> function can be overwritten via an action passed to the controller
+        /// Create a Consumer, which <see cref="HandleMessageAsync(BasicDeliverEventArgs, TConsumeModel)"/> function can be overwritten via an action passed to the controller
         /// </summary>
         /// <param name="queueConnection"></param>
         /// <param name="handleReply">function, which is going to handle the received message</param>
-        public ActionConsumer(IQueueConnection queueConnection, Action<IBasicProperties, TConsumeModel> handleReply) : base(queueConnection)
+        public ActionConsumer(IQueueConnection queueConnection, Func<BasicDeliverEventArgs, TConsumeModel, Task> handleReply) : base(queueConnection)
         {
             _handleMessageAction = handleReply;
         }
 
-        public override void HandleMessage(IBasicProperties properties, TConsumeModel model)
+        public override async Task HandleMessageAsync(BasicDeliverEventArgs ea, TConsumeModel model)
         {
-            _handleMessageAction(properties, model);
+            await _handleMessageAction(ea, model).ConfigureAwait(false);
         }
     }
 }

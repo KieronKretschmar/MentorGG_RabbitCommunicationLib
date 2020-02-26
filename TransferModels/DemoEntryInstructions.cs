@@ -1,11 +1,11 @@
-﻿using RabbitTransfer.Enums;
+﻿using RabbitCommunicationLib.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RabbitTransfer.TransferModels
+namespace RabbitCommunicationLib.TransferModels
 {
-    public class GathererTransferModel : TransferModel
+    public class DemoEntryInstructions : TransferModel
     {
         public string DownloadUrl { get; set; }
         public DateTime MatchDate { get; set; }

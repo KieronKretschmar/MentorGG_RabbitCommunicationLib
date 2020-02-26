@@ -1,8 +1,8 @@
 
 using RabbitMQ.Client;
-using RabbitTransfer.TransferModels;
+using RabbitCommunicationLib.TransferModels;
 
-namespace RabbitTransfer.Interfaces
+namespace RabbitCommunicationLib.Interfaces
 {
     public interface IRPCClient<TProduceModel, TConsumeModel> :
     IProducer<TProduceModel>,

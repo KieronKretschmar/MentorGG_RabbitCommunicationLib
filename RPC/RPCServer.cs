@@ -1,16 +1,16 @@
 ﻿using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using RabbitTransfer.Interfaces;
-using RabbitTransfer.Producer;
-using RabbitTransfer.TransferModels;
+using RabbitCommunicationLib.Interfaces;
+using RabbitCommunicationLib.Producer;
+using RabbitCommunicationLib.TransferModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RabbitTransfer.RPC
+namespace RabbitCommunicationLib.RPC
 {
     /// <summary>
     /// An Abstract IHostedService AMQP RPC Consumer with managed Start and Stop calls.
@@ -39,12 +39,12 @@ namespace RabbitTransfer.RPC
         /// </summary>
         /// <param name="properties"></param>
         /// <param name="model"></param>
-        public override void HandleMessage(IBasicProperties properties, TConsumeModel model)
+        public override async Task HandleMessageAsync(BasicDeliverEventArgs ea, TConsumeModel model)
         {
             // Call the abstract method
-            TProduceModel replyModel = HandleMessageAndReply(properties, model);
+            TProduceModel replyModel = await HandleMessageAndReplyAsync(ea, model).ConfigureAwait(false);
             // Publish the reply.
-            PublishMessage(properties.CorrelationId, replyModel);
+            PublishMessage(ea.BasicProperties.CorrelationId, replyModel);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace RabbitTransfer.RPC
         /// </summary>
         /// <param name="properties">AMQP Properties</param>
         /// <param name="model">Received message</param>
-        public abstract TProduceModel HandleMessageAndReply(IBasicProperties properties, TConsumeModel model);
+        public abstract Task<TProduceModel> HandleMessageAndReplyAsync(BasicDeliverEventArgs ea, TConsumeModel model);
 
     }
 }

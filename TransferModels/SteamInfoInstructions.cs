@@ -1,10 +1,10 @@
-﻿using RabbitTransfer.Enums;
+﻿using RabbitCommunicationLib.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RabbitTransfer.TransferModels
-{    public class SCG_SWS_Model : TransferModel
+namespace RabbitCommunicationLib.TransferModels
+{    public class SteamInfoInstructions : TransferModel
     {
         public long UploaderId { get; set; }
         public string SharingCode { get; set; }

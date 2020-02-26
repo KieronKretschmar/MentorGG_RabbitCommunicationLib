@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RabbitTransfer.Interfaces
+namespace RabbitCommunicationLib.Interfaces
 {
     public interface IRPCQueueConnections
     {

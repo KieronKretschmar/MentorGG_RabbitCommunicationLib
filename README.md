@@ -26,7 +26,7 @@ var connection = new QueueConnection("amqp://*******", "DD2DD");
 It is reccomended to pull these variables from the Enviroment. 
 
 ```csharp
-using RabbitTransfer.Helpers;
+using RabbitCommunicationLib.Helpers;
 
 public static IHostBuilder CreateHostBuilder(string[] args) =>
 	Host.CreateDefaultBuilder(args)
@@ -53,7 +53,7 @@ and overrides the `HandleMessage` method.
 You must supply a `TConsumeModel`.
 
 ```csharp
-using RabbitTransfer.Consumer;
+using RabbitCommunicationLib.Consumer;
 
 class ExampleConsumer : Consumer<DC_DD_Model>
 {
@@ -78,7 +78,7 @@ To produce a message:
 - Define a  `produceModel<TProduceModel>`
 
 ```csharp
-using RabbitTransfer.Producer;
+using RabbitCommunicationLib.Producer;
 
 ...
 
@@ -101,7 +101,7 @@ An RPCServer has the similar requirements as the standard Consumer but you must 
 Instead of overidding the `HandleMessage` method, an RPCServer expects you to return a reply of type `TProduceModel` using `HandleMessageAndReply`
 
 ```csharp
-using RabbitTransfer.Consumer;
+using RabbitCommunicationLib.Consumer;
 
 class ExampleRPCServer : RPCServer<DC_DD_Model, DD_DC_Model>
 {
@@ -125,7 +125,7 @@ class ExampleRPCServer : RPCServer<DC_DD_Model, DD_DC_Model>
 An RPCClient has the similar requirements as the standard Producer but you must also specify a `TConsumeModel` for reply handling.
 
 ```csharp
-using RabbitTransfer.Producer;
+using RabbitCommunicationLib.Producer;
 
 class ExampleRPCClient : RPCClient<DC_DD_Model, DD_DC_Model>
 {

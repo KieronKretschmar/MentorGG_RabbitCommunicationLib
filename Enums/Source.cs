@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RabbitTransfer.Enums
+namespace RabbitCommunicationLib.Enums
 {
+
+    /// <summary>
+    /// Copied from MatchEntities and EquipmentLib. Keep in sync when applying changes to either of them.
+    /// </summary>
     public enum Source : byte
     {
         Unknown = 0,
@@ -12,5 +16,7 @@ namespace RabbitTransfer.Enums
         ManualUpload = 3,
         Scrimmage = 4,
         HLTV = 5,
+        Esea = 6,
+        Cevo = 7,
     }
 }

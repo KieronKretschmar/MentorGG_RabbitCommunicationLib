@@ -1,6 +1,6 @@
-﻿using RabbitTransfer.Interfaces;
+﻿using RabbitCommunicationLib.Interfaces;
 
-namespace RabbitTransfer.Queues
+namespace RabbitCommunicationLib.Queues
 {
     public class RPCQueueConnections : IRPCQueueConnections
     {

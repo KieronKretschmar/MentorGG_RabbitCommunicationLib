@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Text;
 
-namespace RabbitTransfer.TransferModels
+namespace RabbitCommunicationLib.TransferModels
 {
 
     public interface ITransferModel
