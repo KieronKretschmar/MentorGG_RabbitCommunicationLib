@@ -13,7 +13,7 @@ namespace RabbitCommunicationLib.Producer
     /// This is a producer, which publishes to an exchange instead of directly to a queue
     /// </summary>
     /// <remarks>Useful for fanout exchanges or other non-direct exchanges</remarks>
-    public class FanoutProducer<TProduceModel> : IProducer<TProduceModel> where TProduceModel : ITransferModel
+    public class FanoutProducer<TProduceModel> : IProducer<TProduceModel> where TProduceModel : ITransferModel, IDisposable
     {
         /// <summary>
         /// Bool, whether messages should be saved to disk
@@ -36,6 +36,11 @@ namespace RabbitCommunicationLib.Producer
         {
             _exchangeConnection = exchangeConnection;
             _persistentMessageSending = persistentMessageSending;
+        }
+
+        public void Dispose()
+        {
+            channel.Dispose();
         }
 
         /// <summary>
