@@ -13,7 +13,8 @@ namespace RabbitCommunicationLib.Producer
     /// This is a producer, which publishes to an exchange instead of directly to a queue
     /// </summary>
     /// <remarks>Useful for fanout exchanges or other non-direct exchanges</remarks>
-    public class FanoutProducer<TProduceModel> : IProducer<TProduceModel> where TProduceModel : ITransferModel, IDisposable
+    public class FanoutProducer<TProduceModel> : IProducer<TProduceModel>
+        where TProduceModel : ITransferModel
     {
         /// <summary>
         /// Bool, whether messages should be saved to disk
