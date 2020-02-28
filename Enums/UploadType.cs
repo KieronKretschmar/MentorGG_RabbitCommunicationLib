@@ -4,6 +4,9 @@ using System.Text;
 
 namespace RabbitCommunicationLib.Enums
 {
+    /// <summary>
+    /// The Method used to obtain a Demo.
+    /// </summary>
     public enum UploadType : byte
     {
         Unknown = 0,
