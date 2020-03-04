@@ -1,11 +1,15 @@
-﻿using System;
+﻿using RabbitCommunicationLib.TransferModels.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace RabbitCommunicationLib.TransferModels
 {
-    public class RedisLocalizationInstruction : TransferModel
+    public class RedisLocalizationInstruction : TransferModel, IMatchId
     {
+        /// <inheritdoc/>
+        public long MatchId { get; set; }
+
         /// <summary>
         /// Redis key to locate the resource
         /// </summary>

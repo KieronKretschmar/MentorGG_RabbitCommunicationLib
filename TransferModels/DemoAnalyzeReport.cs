@@ -1,10 +1,12 @@
-﻿using System;
+﻿using RabbitCommunicationLib.TransferModels.Interfaces;
+using System;
 
 namespace RabbitCommunicationLib.TransferModels
 {
 
-    public class DemoAnalyzeReport : TaskCompletedReport
+    public class DemoAnalyzeReport : TaskCompletedReport, IMatchId
     {
+        public long MatchId { get; set; }
         public bool BlobDownloadFailed { get; set; } = false;
         public bool Unzipped { get; set; } = false;
         public bool DuplicateChecked { get; set; } = false;

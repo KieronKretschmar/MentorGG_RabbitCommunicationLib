@@ -5,8 +5,11 @@ using System;
 namespace RabbitCommunicationLib.TransferModels
 {
 
-    public class DemoAnalyzeInstruction : TransferModel, IBlobUrl
+    public class DemoAnalyzeInstruction : TransferModel, IBlobUrl, IMatchId
     {
+        /// <inheritdoc/>
+        public long MatchId { get; set; }
+
         /// <summary>
         ///  Source of the Demo.
         /// </summary>
