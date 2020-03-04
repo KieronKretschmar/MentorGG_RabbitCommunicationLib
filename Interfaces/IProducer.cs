@@ -14,6 +14,6 @@ namespace RabbitCommunicationLib.Interfaces
         /// </summary>
         /// <param name="correlationId">Correlation ID for the sent message</param>
         /// <param name="produceModel">Model to produce (Message)</param>
-        void PublishMessage(string correlationId, TProduceModel produceModel);
+        void PublishMessage(TProduceModel produceModel, string correlationId = null);
     }
 }
