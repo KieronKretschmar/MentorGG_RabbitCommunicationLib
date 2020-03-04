@@ -55,8 +55,10 @@ namespace RabbitCommunicationLib.Producer
         /// </summary>
         /// <param name="correlationId">Correlation ID for the sent message</param>
         /// <param name="produceModel">Model to produce (Message)</param>
-        public void PublishMessage(string correlationId, TProduceModel produceModel)
+        public void PublishMessage(TProduceModel produceModel, string correlationId = null)
         {
+            correlationId = correlationId ?? Guid.NewGuid().ToString();
+
             IBasicProperties props = channel.CreateBasicProperties();
             props.CorrelationId = correlationId;
 
