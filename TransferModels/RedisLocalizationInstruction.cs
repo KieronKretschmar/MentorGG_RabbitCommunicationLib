@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RabbitCommunicationLib.TransferModels
 {
-    public class RedisUploadReport : TaskCompletedReport
+    public class RedisLocalizationInstruction : TransferModel
     {
         /// <summary>
         /// Redis key to locate the resource

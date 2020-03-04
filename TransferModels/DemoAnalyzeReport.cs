@@ -1,4 +1,6 @@
-﻿namespace RabbitCommunicationLib.TransferModels
+﻿using System;
+
+namespace RabbitCommunicationLib.TransferModels
 {
 
     public class DemoAnalyzeReport : TaskCompletedReport
@@ -8,6 +10,16 @@
         public bool DuplicateChecked { get; set; } = false;
         public bool IsDuplicate { get; set; } = false;
         public bool UploadedToRedis { get; set; } = false;
+
+        /// <summary>
+        /// Redis key to locate the resource
+        /// </summary>
+        public string RedisKey { get; set; }
+
+        /// <summary>
+        /// Date of expiry for this resource
+        /// </summary>
+        public DateTime ExpiryDate { get; set; }
 
         /// <summary>
         /// FPS the Demo was analyze with.
