@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using RabbitCommunicationLib.Consumer;
 
 namespace RabbitCommunicationLib.RPC
 {
@@ -19,20 +20,17 @@ namespace RabbitCommunicationLib.RPC
     /// </summary>
     /// <typeparam name="TConsumeModel">Transfer Model to consume.</typeparam>
     /// <typeparam name="TProduceModel">Transfer Model to produce.</typeparam>
-    public abstract class RPCServer<TConsumeModel, TProduceModel> :
-    RPCClient<TProduceModel, TConsumeModel>,
-    IRPCServer<TConsumeModel, TProduceModel>
-
-        where TConsumeModel: ITransferModel
-        where TProduceModel: ITransferModel
+    public abstract class RPCServer<TConsumeModel, TProduceModel> : RPCBase<TProduceModel,TConsumeModel>
+        where TConsumeModel : ITransferModel
+        where TProduceModel : ITransferModel
     {
-
         /// <summary>
-        /// Set the AMQP Connections.
+        /// Set the AMQP Connection.
         /// </summary>
-        public RPCServer(
-            IRPCQueueConnections queueConnections,
-            bool persistentMessageSending = true) : base(queueConnections, persistentMessageSending) { }
+        /// <param name="connection"></param>
+        protected RPCServer(IRPCQueueConnections queueConnections, bool persistantMessageSending = true) : base(queueConnections, persistantMessageSending)
+        {
+        }
 
         /// <summary>
         /// Handle a message and publish a reply.
@@ -44,7 +42,7 @@ namespace RabbitCommunicationLib.RPC
             // Call the abstract method
             TProduceModel replyModel = await HandleMessageAndReplyAsync(ea, model).ConfigureAwait(false);
             // Publish the reply.
-            PublishMessage(ea.BasicProperties.CorrelationId, replyModel);
+            producer.PublishMessage(replyModel, ea.BasicProperties.CorrelationId);
         }
 
         /// <summary>
