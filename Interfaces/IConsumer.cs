@@ -4,6 +4,7 @@ using RabbitMQ.Client;
 using RabbitCommunicationLib.TransferModels;
 using System.Threading.Tasks;
 using RabbitMQ.Client.Events;
+using RabbitCommunicationLib.Enums;
 
 namespace RabbitCommunicationLib.Interfaces
 {
@@ -16,6 +17,6 @@ namespace RabbitCommunicationLib.Interfaces
         /// </summary>
         /// <param name="properties">AMQP Properties</param>
         /// <param name="model">Received message</param>
-        Task HandleMessageAsync(BasicDeliverEventArgs ea, TConsumeModel model);
+        Task<ConsumedMessageHandling> HandleMessageAsync(BasicDeliverEventArgs ea, TConsumeModel model);
     }
 }
