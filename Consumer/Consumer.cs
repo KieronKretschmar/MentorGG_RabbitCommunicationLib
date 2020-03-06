@@ -61,12 +61,13 @@ namespace RabbitCommunicationLib.Consumer
         /// Basic Acknowledge a message
         /// </summary>
         /// <param name="ea">Event Arguments</param>
-        protected virtual void BasicAcknowledge(BasicDeliverEventArgs ea)
+        private void BasicAcknowledge(BasicDeliverEventArgs ea)
         {
             channel.BasicAck(
                     deliveryTag: ea.DeliveryTag,
                     multiple: false);
         }
+
 
 
         /// <summary>
@@ -91,13 +92,14 @@ namespace RabbitCommunicationLib.Consumer
         /// </summary>
         /// <param name="ea"></param>
         /// <param name="requeue">Whether the message should be requeued.</param>
-        protected virtual void BasicNack(BasicDeliverEventArgs ea, bool requeue)
+        private void BasicNack(BasicDeliverEventArgs ea, bool requeue)
         {
             channel.BasicNack(
                     deliveryTag: ea.DeliveryTag,
                     multiple: false,
                     requeue: requeue);
         }
+
 
 
         /// <summary>
@@ -134,7 +136,7 @@ namespace RabbitCommunicationLib.Consumer
             }
             catch
             {
-                BasicAcknowledge(ea);
+                TryThrowAwayMessage(ea);
                 return;
             }
 
@@ -144,19 +146,19 @@ namespace RabbitCommunicationLib.Consumer
                 await HandleMessageAsync(ea, model).ConfigureAwait(false);
 
                 // Try Acknowleding it. If it was already acked or nacked, do nothing.
-                TryBasicAcknowledge(ea);
+                TryAcknowledgeMessage(ea);
             }
             catch
             {
                 // If handling a message failed and it was not redelivered, try again. 
                 if (!ea.Redelivered)
                 {
-                    TryBasicNack(ea, true);
+                    TryResendMessage(ea);
                 }
                 // Otherwise ack and "forget about it", assuming the message will never be handled correctly.
                 else
                 {
-                    TryBasicAcknowledge(ea);
+                    TryThrowAwayMessage(ea);
                 }
             }
         }
@@ -193,5 +195,11 @@ namespace RabbitCommunicationLib.Consumer
             _queueConnection.Connection.Dispose();
             await Task.CompletedTask.ConfigureAwait(false);
         }
+
+
+        public void TryResendMessage(BasicDeliverEventArgs ea) => TryBasicNack(ea, true);
+        public void TryThrowAwayMessage(BasicDeliverEventArgs ea) => TryBasicNack(ea, false);
+        public void TryAcknowledgeMessage(BasicDeliverEventArgs ea) => TryBasicAcknowledge(ea);
+
     }
 }
