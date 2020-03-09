@@ -1,4 +1,5 @@
 ﻿using RabbitCommunicationLib.Consumer;
+using RabbitCommunicationLib.Enums;
 using RabbitCommunicationLib.Interfaces;
 using RabbitCommunicationLib.Producer;
 using RabbitCommunicationLib.TransferModels;
@@ -37,8 +38,8 @@ namespace RabbitCommunicationLib.RPC
                 HandleMessageAsync);
         }
 
-        public void ResendMessage(BasicDeliverEventArgs ea) => consumer.TryResendMessage(ea);
-        public void ThrowAwayMessage(BasicDeliverEventArgs ea) => consumer.TryThrowAwayMessage(ea);
+        public void ResendMessage(BasicDeliverEventArgs ea) => consumer.ResendMessage(ea);
+        public void ThrowAwayMessage(BasicDeliverEventArgs ea) => consumer.ThrowAwayMessage(ea);
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
@@ -60,7 +61,7 @@ namespace RabbitCommunicationLib.RPC
         /// </summary>
         /// <param name="properties">headers of the message</param>
         /// <param name="consumeModel">Transfer Model of the message</param>
-        public abstract Task HandleMessageAsync(BasicDeliverEventArgs ea, TConsumeModel consumeModel);
+        public abstract Task<ConsumedMessageHandling> HandleMessageAsync(BasicDeliverEventArgs ea, TConsumeModel consumeModel);
 
     }
 }

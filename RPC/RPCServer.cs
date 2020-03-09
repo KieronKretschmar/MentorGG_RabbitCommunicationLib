@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using RabbitCommunicationLib.Consumer;
+using RabbitCommunicationLib.Enums;
 
 namespace RabbitCommunicationLib.RPC
 {
@@ -20,7 +21,7 @@ namespace RabbitCommunicationLib.RPC
     /// </summary>
     /// <typeparam name="TConsumeModel">Transfer Model to consume.</typeparam>
     /// <typeparam name="TProduceModel">Transfer Model to produce.</typeparam>
-    public abstract class RPCServer<TConsumeModel, TProduceModel> : RPCBase<TProduceModel,TConsumeModel>
+    public abstract class RPCServer<TConsumeModel, TProduceModel> : RPCBase<TProduceModel, TConsumeModel>
         where TConsumeModel : ITransferModel
         where TProduceModel : ITransferModel
     {
@@ -37,12 +38,17 @@ namespace RabbitCommunicationLib.RPC
         /// </summary>
         /// <param name="properties"></param>
         /// <param name="model"></param>
-        public override async Task HandleMessageAsync(BasicDeliverEventArgs ea, TConsumeModel model)
+        public override async Task<ConsumedMessageHandling> HandleMessageAsync(BasicDeliverEventArgs ea, TConsumeModel model)
         {
             // Call the abstract method
-            TProduceModel replyModel = await HandleMessageAndReplyAsync(ea, model).ConfigureAwait(false);
+            var response = await HandleMessageAndReplyAsync(ea, model).ConfigureAwait(false);
+            TProduceModel replyModel = response.TransferModel;
+
             // Publish the reply.
-            producer.PublishMessage(replyModel, ea.BasicProperties.CorrelationId);
+            if (response.MessageHandling == ConsumedMessageHandling.Done)
+                producer.PublishMessage(replyModel, ea.BasicProperties.CorrelationId);
+
+            return response.MessageHandling;
         }
 
         /// <summary>
@@ -50,7 +56,13 @@ namespace RabbitCommunicationLib.RPC
         /// </summary>
         /// <param name="properties">AMQP Properties</param>
         /// <param name="model">Received message</param>
-        public abstract Task<TProduceModel> HandleMessageAndReplyAsync(BasicDeliverEventArgs ea, TConsumeModel model);
+        public abstract Task<ConsumedMessageHandling<TProduceModel>> HandleMessageAndReplyAsync(BasicDeliverEventArgs ea, TConsumeModel model);
 
+
+        public class ConsumedMessageHandling<TModel> where TModel : ITransferModel
+        {
+            public ConsumedMessageHandling MessageHandling;
+            public TModel TransferModel;
+        }
     }
 }

@@ -9,6 +9,7 @@ using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using RabbitCommunicationLib.Enums;
 
 namespace RabbitCommunicationLib.Consumer
 {
@@ -16,9 +17,7 @@ namespace RabbitCommunicationLib.Consumer
     /// An Abstract IHostedService AMQP Consumer with managed Start and Stop calls.
     /// </summary>
     /// <typeparam name="TConsumeModel">Tranfer Model to consume.</typeparam>
-    public abstract class Consumer<TConsumeModel> :
-    IConsumer<TConsumeModel>
-
+    public abstract class Consumer<TConsumeModel> : IConsumer<TConsumeModel>
         where TConsumeModel : ITransferModel
     {
         /// <summary>
@@ -54,7 +53,7 @@ namespace RabbitCommunicationLib.Consumer
         /// </summary>
         /// <param name="properties">AMQP Properties</param>
         /// <param name="model">Received message</param>
-        public abstract Task HandleMessageAsync(BasicDeliverEventArgs ea, TConsumeModel model);
+        public abstract Task<ConsumedMessageHandling> HandleMessageAsync(BasicDeliverEventArgs ea, TConsumeModel model);
 
 
         /// <summary>
@@ -66,25 +65,6 @@ namespace RabbitCommunicationLib.Consumer
             channel.BasicAck(
                     deliveryTag: ea.DeliveryTag,
                     multiple: false);
-        }
-
-
-
-        /// <summary>
-        /// Tries Basic Acknowledge a message. If it was already acked or nacked, do nothing.
-        /// </summary>
-        /// <param name="ea">Event Arguments</param>
-        private bool TryBasicAcknowledge(BasicDeliverEventArgs ea)
-        {
-            try
-            {
-                BasicAcknowledge(ea);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
         }
 
         /// <summary>
@@ -100,26 +80,6 @@ namespace RabbitCommunicationLib.Consumer
                     requeue: requeue);
         }
 
-
-
-        /// <summary>
-        /// Tries to BasicNack a message, indicating failure to process it. If it was already acked or nacked, do nothing.
-        /// </summary>
-        /// <param name="ea"></param>
-        /// <param name="requeue">Whether the message should be requeued.</param>
-        private bool TryBasicNack(BasicDeliverEventArgs ea, bool requeue)
-        {
-            try
-            {
-                BasicNack(ea, requeue);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         /// <summary>
         /// Handle the event if a Rabbit consumer receives a message.
         /// </summary>
@@ -128,7 +88,7 @@ namespace RabbitCommunicationLib.Consumer
         protected virtual async Task OnConsumerReceivedAsync(IModel channel, BasicDeliverEventArgs ea)
         {
             // If a model cannot be obtained from the body,
-            // acknowledge the message as no work can be done with an invalid model..
+            // throw away the message as no work can be done with an invalid model.
             TConsumeModel model;
             try
             {
@@ -136,32 +96,35 @@ namespace RabbitCommunicationLib.Consumer
             }
             catch
             {
-                TryThrowAwayMessage(ea);
+                ThrowAwayMessage(ea);
                 return;
             }
 
-            // Try handling the message and ack/nack it
             try
             {
-                await HandleMessageAsync(ea, model).ConfigureAwait(false);
+                var response = await HandleMessageAsync(ea, model).ConfigureAwait(false);
 
-                // Try Acknowleding it. If it was already acked or nacked, do nothing.
-                TryAcknowledgeMessage(ea);
+                switch (response)
+                {
+                    case ConsumedMessageHandling.Done:
+                        AcknowledgeMessage(ea);
+                        break;
+                    case ConsumedMessageHandling.Resend:
+                        ResendMessage(ea);
+                        break;
+                    case ConsumedMessageHandling.ThrowAway:
+                        ThrowAwayMessage(ea);
+                        break;
+                }
             }
-            catch
+            catch (Exception e)
             {
-                // If handling a message failed and it was not redelivered, try again. 
-                if (!ea.Redelivered)
-                {
-                    TryResendMessage(ea);
-                }
-                // Otherwise ack and "forget about it", assuming the message will never be handled correctly.
-                else
-                {
-                    TryThrowAwayMessage(ea);
-                }
+                //This should never happen, all possible exceptions should be catched by the developer.
+                Console.WriteLine($"Handling messaging failed due to unhandled exception {e}. This should never happen, CONTACT AN ADMIN IMMEDIATLY");
+                ThrowAwayMessage(ea);
             }
         }
+
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
@@ -197,9 +160,9 @@ namespace RabbitCommunicationLib.Consumer
         }
 
 
-        public void TryResendMessage(BasicDeliverEventArgs ea) => TryBasicNack(ea, true);
-        public void TryThrowAwayMessage(BasicDeliverEventArgs ea) => TryBasicNack(ea, false);
-        public void TryAcknowledgeMessage(BasicDeliverEventArgs ea) => TryBasicAcknowledge(ea);
+        public void ResendMessage(BasicDeliverEventArgs ea) => BasicNack(ea, true);
+        public void ThrowAwayMessage(BasicDeliverEventArgs ea) => BasicNack(ea, false);
+        public void AcknowledgeMessage(BasicDeliverEventArgs ea) => BasicAcknowledge(ea);
 
     }
 }
