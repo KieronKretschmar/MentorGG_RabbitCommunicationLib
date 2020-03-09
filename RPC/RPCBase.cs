@@ -37,6 +37,8 @@ namespace RabbitCommunicationLib.RPC
                 HandleMessageAsync);
         }
 
+        public void ResendMessage(BasicDeliverEventArgs ea) => consumer.TryResendMessage(ea);
+        public void ThrowAwayMessage(BasicDeliverEventArgs ea) => consumer.TryThrowAwayMessage(ea);
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
