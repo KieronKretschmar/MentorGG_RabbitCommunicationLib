@@ -120,7 +120,7 @@ namespace RabbitCommunicationLib.Consumer
             catch (Exception e)
             {
                 //This should never happen, all possible exceptions should be catched by the developer.
-                Console.WriteLine($"Handling messaging failed due to unhandled exception {e}. This should never happen, CONTACT AN ADMIN IMMEDIATLY");
+                Console.WriteLine($"Handling messaging failed due to unhandled exception {e}. This should never happen.");
                 ThrowAwayMessage(ea);
             }
         }
