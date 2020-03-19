@@ -37,6 +37,13 @@ namespace RabbitCommunicationLib.Producer
         {
             _exchangeConnection = exchangeConnection;
             _persistentMessageSending = persistentMessageSending;
+            channel = _exchangeConnection.Connection.CreateModel();
+
+            channel.ExchangeDeclare(
+                exchange: _exchangeConnection.ExchangeName,
+                ExchangeType.Fanout,
+                durable: true,
+                autoDelete: false);
         }
 
         public void Dispose()
@@ -65,26 +72,6 @@ namespace RabbitCommunicationLib.Producer
                 routingKey: "",
                 basicProperties: props,
                 body: messageBody);
-        }
-
-        public async Task StartAsync(CancellationToken cancellationToken)
-        {
-            channel = _exchangeConnection.Connection.CreateModel();
-
-            channel.ExchangeDeclare(
-                exchange: _exchangeConnection.ExchangeName,
-                ExchangeType.Fanout,
-                durable: true,
-                autoDelete: false);
-
-            await Task.CompletedTask;
-        }
-
-        public async Task StopAsync(CancellationToken cancellationToken)
-        {
-            channel.Dispose();
-            _exchangeConnection.Connection.Dispose();
-            await Task.CompletedTask;
         }
     }
 }
