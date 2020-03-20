@@ -15,6 +15,6 @@ namespace RabbitCommunicationLib.Interfaces
             /// <summary>
             /// AMQP Queue to consume.
             /// </summary>
-            string ExchangeName { get; set; }
+            string Exchange { get; set; }
     }
 }

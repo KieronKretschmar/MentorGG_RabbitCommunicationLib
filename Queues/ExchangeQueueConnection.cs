@@ -1,15 +1,16 @@
-﻿using System;
+﻿using RabbitCommunicationLib.Interfaces;
+using RabbitMQ.Client;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using RabbitCommunicationLib.Interfaces;
-using RabbitMQ.Client;
 
 namespace RabbitCommunicationLib.Queues
 {
-    public class ExchangeConnection : IExchangeConnection
+    public class ExchangeQueueConnection : IExchangeQueueConnection
     {
         public IConnection Connection { get; set; }
         public string Exchange { get; set; }
+        public string Queue { get; set; }
 
 
         /// <summary>
@@ -17,13 +18,15 @@ namespace RabbitCommunicationLib.Queues
         /// </summary>
         /// <param name="rabbitUri">Rabbit URI</param>
         /// <param name="exchangeName">Queue Name</param>
-        public ExchangeConnection(string rabbitUri, string exchangeName)
+        public ExchangeQueueConnection(string rabbitUri, string exchangeName, string queueName)
         {
             AssertValidValue("rabbitUrl", rabbitUri);
             AssertValidValue("exchangeName", exchangeName);
+            AssertValidValue("exchangeName", queueName);
 
             Connection = ConnectionFactoryHelper.FromUriString(rabbitUri);
             Exchange = exchangeName;
+            Queue = queueName;
         }
 
         /// <summary>
