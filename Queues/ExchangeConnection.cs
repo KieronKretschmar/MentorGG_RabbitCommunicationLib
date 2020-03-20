@@ -9,7 +9,7 @@ namespace RabbitCommunicationLib.Queues
     public class ExchangeConnection : IExchangeConnection
     {
         public IConnection Connection { get; set; }
-        public string ExchangeName { get; set; }
+        public string Exchange { get; set; }
 
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace RabbitCommunicationLib.Queues
             AssertValidValue("exchangeName", exchangeName);
 
             Connection = ConnectionFactoryHelper.FromUriString(rabbitUri);
-            ExchangeName = exchangeName;
+            Exchange = exchangeName;
         }
 
         /// <summary>

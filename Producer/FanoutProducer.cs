@@ -40,7 +40,7 @@ namespace RabbitCommunicationLib.Producer
             channel = _exchangeConnection.Connection.CreateModel();
 
             channel.ExchangeDeclare(
-                exchange: _exchangeConnection.ExchangeName,
+                exchange: _exchangeConnection.Exchange,
                 ExchangeType.Fanout,
                 durable: true,
                 autoDelete: false);
@@ -68,7 +68,7 @@ namespace RabbitCommunicationLib.Producer
             props.Persistent = _persistentMessageSending;
 
             channel.BasicPublish(
-                exchange: _exchangeConnection.ExchangeName,
+                exchange: _exchangeConnection.Exchange,
                 routingKey: "",
                 basicProperties: props,
                 body: messageBody);
