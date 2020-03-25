@@ -29,7 +29,7 @@ namespace RabbitCommunicationLib.Consumer
         /// </summary>
         /// <param name="queueConnection"></param>
         /// <param name="handleReply">function, which is going to handle the received message</param>
-        public ActionConsumer(IQueueConnection queueConnection, Func<BasicDeliverEventArgs, TConsumeModel, Task<ConsumedMessageHandling>> handleReply) : base(queueConnection)
+        public ActionConsumer(IQueueConnection queueConnection, Func<BasicDeliverEventArgs, TConsumeModel, Task<ConsumedMessageHandling>> handleReply, ushort prefetchCount = 1) : base(queueConnection, prefetchCount)
         {
             _handleMessageAction = handleReply;
         }
