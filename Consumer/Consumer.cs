@@ -130,6 +130,8 @@ namespace RabbitCommunicationLib.Consumer
         {
             channel = _queueConnection.Connection.CreateModel();
 
+            channel.BasicQos(0, 1, false);
+
             channel.QueueDeclare(
                 queue: _queueConnection.Queue,
                 durable: true,
