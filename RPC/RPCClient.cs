@@ -28,7 +28,7 @@ namespace RabbitCommunicationLib.RPC
         /// Set the AMQP Connection.
         /// </summary>
         /// <param name="connection"></param>
-        protected RPCClient(IRPCQueueConnections queueConnections, bool persistantMessageSending = true) : base(queueConnections, persistantMessageSending)
+        protected RPCClient(IRPCQueueConnections queueConnections, bool persistantMessageSending = true, ushort prefetchCount = 1) : base(queueConnections, persistantMessageSending, prefetchCount)
         {
         }
 

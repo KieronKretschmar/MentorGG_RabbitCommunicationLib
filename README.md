@@ -52,6 +52,10 @@ and overrides the `HandleMessage` method.
 
 You must supply a `TConsumeModel`.
 
+The consumer has an optional prefetch count, which defaults to 1.
+This means that only one message is processed at a time. A second one is only consumed if the first one has been acknowledged.
+**Be careful of resending a corrupt message, if it ends up in a loop of being constantly resend, no other message can be processed.** 
+
 ```csharp
 using RabbitCommunicationLib.Consumer;
 

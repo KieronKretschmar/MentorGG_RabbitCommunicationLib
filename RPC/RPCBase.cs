@@ -27,7 +27,7 @@ namespace RabbitCommunicationLib.RPC
         protected readonly ActionConsumer<TConsumeModel> consumer;
         protected RPCBase(
             IRPCQueueConnections queueConnections,
-            bool persistantMessageSending = true)
+            bool persistantMessageSending = true, ushort prefetchCount = 1)
         {
             producer = new Producer<TProduceModel>(
                 queueConnections.ProduceConnection,
@@ -35,7 +35,7 @@ namespace RabbitCommunicationLib.RPC
 
             consumer = new ActionConsumer<TConsumeModel>(
                 queueConnections.ConsumeConnection,
-                HandleMessageAsync);
+                HandleMessageAsync, prefetchCount);
         }
 
         public void ResendMessage(BasicDeliverEventArgs ea) => consumer.ResendMessage(ea);
