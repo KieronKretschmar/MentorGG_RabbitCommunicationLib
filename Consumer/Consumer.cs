@@ -24,6 +24,7 @@ namespace RabbitCommunicationLib.Consumer
         /// Connection to the AMQP Rabbit Instance.
         /// </summary>
         private readonly IQueueConnection _queueConnection;
+        private readonly ushort _prefetchCount;
 
         /// <summary>
         /// Connection channel.
@@ -39,9 +40,10 @@ namespace RabbitCommunicationLib.Consumer
         /// <summary>
         /// Set the AMQP Connection.
         /// </summary>
-        protected Consumer(IQueueConnection queueConnection)
+        protected Consumer(IQueueConnection queueConnection, ushort prefetchCount = 1)
         {
             _queueConnection = queueConnection;
+            _prefetchCount = prefetchCount;
         }
 
         /// <summary>
@@ -129,6 +131,8 @@ namespace RabbitCommunicationLib.Consumer
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             channel = _queueConnection.Connection.CreateModel();
+
+            channel.BasicQos(0, _prefetchCount, false);
 
             channel.QueueDeclare(
                 queue: _queueConnection.Queue,
