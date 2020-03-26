@@ -22,6 +22,11 @@ namespace RabbitCommunicationLib.Consumer
         private readonly IExchangeQueueConnection _queueConnection;
 
         /// <summary>
+        /// PrefetchCount + 1 = Number of messages that are consumed simultaneously
+        /// </summary>
+        private readonly ushort _prefetchCount;
+
+        /// <summary>
         /// Connection channel.
         /// </summary>
         private IModel channel;
@@ -35,9 +40,10 @@ namespace RabbitCommunicationLib.Consumer
         /// <summary>
         /// Set the AMQP Connection.
         /// </summary>
-        protected FanOutConsumer(IExchangeQueueConnection queueConnection)
+        protected FanOutConsumer(IExchangeQueueConnection queueConnection, ushort prefetchCount = 1)
         {
             _queueConnection = queueConnection;
+            _prefetchCount = prefetchCount;
         }
 
         /// <summary>
@@ -146,6 +152,8 @@ namespace RabbitCommunicationLib.Consumer
                 exchange:_queueConnection.Exchange,
                 routingKey:"This gets ignored in a fanout exchange"
                 );
+
+            channel.BasicQos(0, _prefetchCount, false);
 
             consumer = new EventingBasicConsumer(channel);
 

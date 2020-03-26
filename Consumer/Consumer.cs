@@ -24,6 +24,10 @@ namespace RabbitCommunicationLib.Consumer
         /// Connection to the AMQP Rabbit Instance.
         /// </summary>
         private readonly IQueueConnection _queueConnection;
+
+        /// <summary>
+        /// PrefetchCount + 1 = Number of messages that are consumed simultaneously
+        /// </summary>
         private readonly ushort _prefetchCount;
 
         /// <summary>
