@@ -102,6 +102,7 @@ namespace RabbitCommunicationLib.Consumer
             }
             catch
             {
+                Console.WriteLine($"ERROR: AMQP Message in queue [ {_queueConnection.Queue} ] could not be read and is thrown away. Message body [ {Encoding.UTF8.GetString(ea.Body)} ]");
                 ThrowAwayMessage(ea);
                 return;
             }
