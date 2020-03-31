@@ -114,12 +114,15 @@ namespace RabbitCommunicationLib.Consumer
                 switch (response)
                 {
                     case ConsumedMessageHandling.Done:
+                        Console.WriteLine($"Finished handling message. Action: Done. Queue [ {_queueConnection.Queue} ]. Message body [ {Encoding.UTF8.GetString(ea.Body)} ]");
                         AcknowledgeMessage(ea);
                         break;
                     case ConsumedMessageHandling.Resend:
+                        Console.WriteLine($"Finished handling message. Action: Resend. Queue [ {_queueConnection.Queue} ]. Message body [ {Encoding.UTF8.GetString(ea.Body)} ]");
                         ResendMessage(ea);
                         break;
                     case ConsumedMessageHandling.ThrowAway:
+                        Console.WriteLine($"Finished handling message. Action: ThrowAway. Queue [ {_queueConnection.Queue} ]. Message body [ {Encoding.UTF8.GetString(ea.Body)} ]");
                         ThrowAwayMessage(ea);
                         break;
                 }
