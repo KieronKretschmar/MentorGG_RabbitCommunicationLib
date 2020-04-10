@@ -138,6 +138,7 @@ namespace RabbitCommunicationLib.Consumer
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            Console.WriteLine($"Creating Consumer Channel [ {this._queueConnection.Queue} ]");
             channel = _queueConnection.Connection.CreateModel();
 
             channel.BasicQos(0, _prefetchCount, false);
@@ -166,6 +167,7 @@ namespace RabbitCommunicationLib.Consumer
                 consumer.HandleModelShutdown((IModel) sender, ea);
             };
 
+            Console.WriteLine($"Disposing Consumer Channel [ {this._queueConnection.Queue} ]");
             channel.Dispose();
             _queueConnection.Connection.Dispose();
             await Task.CompletedTask.ConfigureAwait(false);

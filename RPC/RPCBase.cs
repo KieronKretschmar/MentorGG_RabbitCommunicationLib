@@ -29,6 +29,7 @@ namespace RabbitCommunicationLib.RPC
             IRPCQueueConnections queueConnections,
             bool persistantMessageSending = true, ushort prefetchCount = 1)
         {
+            Console.WriteLine($"Creating RPCBase with producer queue [ {queueConnections.ProduceConnection.Queue} ]");
             producer = new Producer<TProduceModel>(
                 queueConnections.ProduceConnection,
                 persistantMessageSending);

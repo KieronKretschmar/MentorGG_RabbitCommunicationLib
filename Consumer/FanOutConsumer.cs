@@ -130,6 +130,8 @@ namespace RabbitCommunicationLib.Consumer
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            Console.WriteLine($"Creating FanoutConsumer Channel [ {this._queueConnection.Exchange} ]");
+
             channel = _queueConnection.Connection.CreateModel();
 
             channel.ExchangeDeclare
@@ -173,6 +175,7 @@ namespace RabbitCommunicationLib.Consumer
                 consumer.HandleModelShutdown((IModel) sender, ea);
             };
 
+            Console.WriteLine($"Disposing FanoutConsumer Channel [ {this._queueConnection.Exchange}  ]");
             channel.Dispose();
             _queueConnection.Connection.Dispose();
             await Task.CompletedTask.ConfigureAwait(false);

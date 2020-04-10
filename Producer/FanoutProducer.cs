@@ -37,6 +37,7 @@ namespace RabbitCommunicationLib.Producer
         {
             _exchangeConnection = exchangeConnection;
             _persistentMessageSending = persistentMessageSending;
+            Console.WriteLine($"Creating FanoutProducer Channel [ {this._exchangeConnection.Exchange} ]");
             channel = _exchangeConnection.Connection.CreateModel();
 
             channel.ExchangeDeclare(
@@ -48,6 +49,7 @@ namespace RabbitCommunicationLib.Producer
 
         public void Dispose()
         {
+            Console.WriteLine($"Disposing FanoutProducer Channel [ {this._exchangeConnection.Exchange} ]");
             channel.Dispose();
         }
 

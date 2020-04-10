@@ -41,6 +41,7 @@ namespace RabbitCommunicationLib.Producer
             _persistentMessageSending = persistentMessageSending;
 
 
+            Console.WriteLine($"Creating Producer Channel [ {this._queueConnection.Queue} ]");
             channel = _queueConnection.Connection.CreateModel();
             channel.QueueDeclare(
                 queue: _queueConnection.Queue,
@@ -75,6 +76,7 @@ namespace RabbitCommunicationLib.Producer
 
         public void Dispose()
         {
+            Console.WriteLine($"Disposing Producer Channel [ {this._queueConnection.Queue} ]");
             channel.Dispose();
         }
     }
