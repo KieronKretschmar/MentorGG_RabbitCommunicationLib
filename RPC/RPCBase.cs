@@ -52,7 +52,12 @@ namespace RabbitCommunicationLib.RPC
             await consumer.StopAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public void Dispose() => producer.Dispose();
+        public void Dispose()
+        {
+            Console.WriteLine($"Disposing RPCBase");
+            producer.Dispose();
+            // TODO Dispose consumer
+        }
 
 
         /// <summary>
