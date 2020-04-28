@@ -6,12 +6,10 @@ namespace RabbitCommunicationLib.TransferModels
 
     public class DemoAnalyzeReport : TaskCompletedReport, IMatchId
     {
-        public bool BlobDownloadFailed { get; set; } = false;
-        public bool Unzipped { get; set; } = false;
-        public bool DuplicateChecked { get; set; } = false;
-        public bool IsDuplicate { get; set; } = false;
-        public bool DemoAnalyzerSucceeded { get; set; } = false;
-        public bool UploadedToRedis { get; set; } = false;
+        /// <summary>
+        /// If not null, state of which the analyzation failed.
+        /// </summary>
+        public DemoAnalyzeFailure Failure { get; set; }
 
         /// <summary>
         /// Redis key to locate the resource
@@ -32,5 +30,41 @@ namespace RabbitCommunicationLib.TransferModels
         /// Unique identifier of the Demo.
         /// </summary>
         public string Hash { get; set; }
+    }
+
+    /// <summary>
+    /// Possible failures when Analzing a Demo.
+    /// </summary>
+    public enum DemoAnalyzeFailure {
+
+        /// <summary>
+        /// Indicates the Blob Download failed.
+        /// </summary>
+        BlobDownload,
+
+        /// <summary>
+        /// Indicates Storage to Redis failed.
+        /// </summary>
+        RedisStorage,
+
+        /// <summary>
+        /// Indicates Unzipping Failed.
+        /// </summary>
+        Unzip,
+
+        /// <summary>
+        /// Indicates the Demo was a duplicate.
+        /// </summary>
+        Duplicate,
+
+        /// <summary>
+        /// Indicates the Analyze step failed.
+        /// </summary>
+        Analyze,
+
+        /// <summary>
+        /// Indicates the Enrich step failed.
+        /// </summary>
+        Enrich
     }
 }
