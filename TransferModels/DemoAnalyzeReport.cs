@@ -35,36 +35,48 @@ namespace RabbitCommunicationLib.TransferModels
     /// <summary>
     /// Possible failures when Analzing a Demo.
     /// </summary>
-    public enum DemoAnalyzeFailure {
+    public enum DemoAnalyzeFailure
+    {
 
+        /// <summary>
+        /// Unknown Failure.
+        /// </summary>
+        Unknown = 0,
+        
         /// <summary>
         /// Indicates the Blob Download failed.
         /// </summary>
-        BlobDownload,
-
-        /// <summary>
-        /// Indicates Storage to Redis failed.
-        /// </summary>
-        RedisStorage,
+        BlobDownload = 1,
 
         /// <summary>
         /// Indicates Unzipping Failed.
         /// </summary>
-        Unzip,
+        Unzip = 2,
+
+        /// <summary>
+        /// Indicates Http Communication for checking the Demo Hash failed.
+        /// </summary>
+        HttpHashCheck = 3,
 
         /// <summary>
         /// Indicates the Demo was a duplicate.
         /// </summary>
-        Duplicate,
+        Duplicate = 4,
 
         /// <summary>
         /// Indicates the Analyze step failed.
         /// </summary>
-        Analyze,
+        Analyze = 5,
 
         /// <summary>
         /// Indicates the Enrich step failed.
         /// </summary>
-        Enrich
+        Enrich = 6,
+
+        /// <summary>
+        /// Indicates Storage to Redis failed.
+        /// </summary>
+        RedisStorage = 7,
+        
     }
 }
