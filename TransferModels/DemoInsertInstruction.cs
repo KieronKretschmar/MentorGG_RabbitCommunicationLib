@@ -7,7 +7,7 @@ using System.Text;
 namespace RabbitCommunicationLib.TransferModels
 {
     /// <summary>
-    /// Message instructing DemoCentral to insert a new demo identified at external Demo provider.
+    /// Instructions regarding the insertion of a new demo identified at external Demo provider, e.g. Valve's or Faceit's servers.
     /// </summary>
     public class DemoInsertInstruction : TransferModel, IDownloadUrl
     {

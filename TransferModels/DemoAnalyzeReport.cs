@@ -4,7 +4,9 @@ using System;
 
 namespace RabbitCommunicationLib.TransferModels
 {
-
+    /// <summary>
+    /// Report from DemoFileWorker regarding analysis of a demo file.
+    /// </summary>
     public class DemoAnalyzeReport : TaskCompletedReport, IMatchId
     {
         /// <summary>

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace RabbitCommunicationLib.TransferModels
 {
+    /// <summary>
+    /// Instructions for SituationOperator to extract Situations from a MatchDataSet and upload them.
+    /// </summary>
     public class SituationExtractionReport : TaskCompletedReport
     {
         /// <summary>
