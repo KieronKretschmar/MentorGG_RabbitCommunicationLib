@@ -10,7 +10,7 @@ namespace RabbitCommunicationLib.TransferModels
     public class SituationExtractionReport : TaskCompletedReport
     {
         /// <summary>
-        /// The outcome of the attemped analysis.
+        /// The step during which the database upload failed, or null if it succeeded.
         /// </summary>
         public DemoAnalysisBlock? Block { get; set; }
 
@@ -18,11 +18,9 @@ namespace RabbitCommunicationLib.TransferModels
         /// Constructor.
         /// </summary>
         /// <param name="matchId"></param>
-        public SituationExtractionReport(long matchId)
+        public SituationExtractionReport(long matchId) : base(matchId)
         {
-            MatchId = matchId;
             Block = null;
-            Success = false;
         }
     }
 }
