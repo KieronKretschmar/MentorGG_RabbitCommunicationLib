@@ -7,27 +7,21 @@ using System.Threading.Tasks;
 
 namespace RabbitCommunicationLib.TransferModels
 {
-    public class SituationExtractionReport : TransferModel
+    public class SituationExtractionReport : TaskCompletedReport
     {
-        /// <summary>
-        /// Id of the Match which was attempted to be analyzed by SituationOperator.
-        /// </summary>
-        public long MatchId { get; set; }
-
         /// <summary>
         /// The outcome of the attemped analysis.
         /// </summary>
-        public DemoAnalysisBlock Block { get; set; }
+        public DemoAnalysisBlock? Block { get; set; }
 
         /// <summary>
-        /// Indicates if the download was succsesful
+        /// Constructor.
         /// </summary>
-        public bool Success { get; set; }
-
+        /// <param name="matchId"></param>
         public SituationExtractionReport(long matchId)
         {
             MatchId = matchId;
-            Block = DemoAnalysisBlock.UnknownSituationOperator;
+            Block = null;
             Success = false;
         }
     }
