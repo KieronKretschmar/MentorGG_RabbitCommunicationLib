@@ -6,6 +6,9 @@ using System.Text;
 
 namespace RabbitCommunicationLib.TransferModels
 {
+    /// <summary>
+    /// Message instructing DemoCentral to insert a new demo identified at external Demo provider.
+    /// </summary>
     public class DemoInsertInstruction : TransferModel, IDownloadUrl
     {
         public string DownloadUrl { get; set; }
