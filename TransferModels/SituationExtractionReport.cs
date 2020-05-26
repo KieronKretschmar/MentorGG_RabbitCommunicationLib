@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RabbitCommunicationLib.TransferModels
 {
-    public class SituationOperatorResponseModel : TransferModel
+    public class SituationExtractionReport : TransferModel
     {
         /// <summary>
         /// Id of the Match which was attempted to be analyzed by SituationOperator.
@@ -24,7 +24,7 @@ namespace RabbitCommunicationLib.TransferModels
         /// </summary>
         public bool Success { get; set; }
 
-        public SituationOperatorResponseModel(long matchId)
+        public SituationExtractionReport(long matchId)
         {
             MatchId = matchId;
             Block = DemoAnalysisBlock.UnknownSituationOperator;
