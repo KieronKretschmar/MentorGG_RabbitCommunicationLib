@@ -8,7 +8,7 @@ namespace RabbitCommunicationLib.TransferModels
     /// <summary>
     /// Instructions for MatchWriter to upload of a MatchDataSet into the MatchDb.
     /// </summary>
-    public class MatchDatabaseInsertionInstructions : TransferModel, IMatchId
+    public class MatchDatabaseInsertionInstruction : TransferModel, IMatchId
     {
         /// <inheritdoc/>
         public long MatchId { get; set; }
