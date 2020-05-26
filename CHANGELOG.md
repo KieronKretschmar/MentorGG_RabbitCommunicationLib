@@ -7,8 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2020-05-26
 ##Added
 - SituationExtractionReport
-### Changed
+- MatchDatabaseInsertionReport (MatchWriter was previously using TaskCompletedReport)
+- Constructor for TaskCompletedReport
 - Added enum values for SituationOperator to DemoAnalysisBlock
+
+### Changed
+- Make DemoAnalysisBlock props nullable and default to null
+
+### Removed
+- Property DemoAnalyzeReport.FramesPerSecond
 
 ## [0.9.0] - 2020-05-25
 ### Changed
