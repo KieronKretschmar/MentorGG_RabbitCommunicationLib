@@ -9,7 +9,7 @@ namespace RabbitCommunicationLib.TransferModels
     /// <summary>
     /// Instructions regarding the insertion of a new demo that was downloaded through manual upload.
     /// </summary>
-    public class ManualDownloadInsertInstructions : TransferModel
+    public class ManualDownloadInsertInstruction : TransferModel
     {
         public string BlobUrl { get; set; }
 
