@@ -6,6 +6,9 @@ using System.Text;
 
 namespace RabbitCommunicationLib.TransferModels
 {
+    /// <summary>
+    /// Instructions regarding the insertion of a new demo identified at external Demo provider, e.g. Valve's or Faceit's servers.
+    /// </summary>
     public class DemoInsertInstruction : TransferModel, IDownloadUrl
     {
         public string DownloadUrl { get; set; }

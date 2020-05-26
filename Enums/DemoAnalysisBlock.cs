@@ -64,9 +64,17 @@ namespace RabbitCommunicationLib.Enums
         /// </summary>
         UnknownMatchWriter = 3000,
 
+        #region SituationOperator
         /// <summary>
         /// Indicates SituationOperator failed without a specified reason.
         /// </summary>
         UnknownSituationOperator = 4000,
+
+        /// <summary>
+        /// Indicates access of MatchDataSet failed
+        /// </summary>
+        MatchDataSetAccess = 4010,
+
+        #endregion
     }
 }

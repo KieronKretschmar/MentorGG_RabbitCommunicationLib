@@ -4,32 +4,38 @@ using System;
 
 namespace RabbitCommunicationLib.TransferModels
 {
-
+    /// <summary>
+    /// Report from DemoFileWorker regarding analysis of a demo file.
+    /// </summary>
     public class DemoAnalyzeReport : TaskCompletedReport, IMatchId
     {
         /// <summary>
-        /// If not null, state of which the analyzation failed.
+        /// The step during which the analysis failed, or null if it succeeded.
         /// </summary>
-        public DemoAnalysisBlock Block { get; set; }
+        public DemoAnalysisBlock? Block { get; set; }
 
         /// <summary>
-        /// Redis key to locate the resource
+        /// Redis key to locate the resource.
         /// </summary>
         public string RedisKey { get; set; }
 
         /// <summary>
-        /// Date of expiry for this resource
+        /// Date of expiry for this resource.
         /// </summary>
         public DateTime ExpiryDate { get; set; }
-
-        /// <summary>
-        /// FPS the Demo was analyze with.
-        /// </summary>
-        public int FramesPerSecond { get; set; }
 
         /// <summary>
         /// Unique identifier of the Demo.
         /// </summary>
         public string Hash { get; set; }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="matchId"></param>
+        public DemoAnalyzeReport(long matchId) : base(matchId)
+        {
+            Block = null;
+        }
     }
 }

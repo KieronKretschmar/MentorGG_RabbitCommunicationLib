@@ -4,7 +4,11 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace RabbitCommunicationLib.TransferModels
-{    public class SharingCodeInstruction: TransferModel
+{
+    /// <summary>
+    /// Instructions for SteamworksService to extract data from a SharingCode and pass it on to DemoCentral.
+    /// </summary>
+    public class SharingCodeInstruction: TransferModel
     {
         /// <summary>
         /// SteamId of the person uploading the Demo.

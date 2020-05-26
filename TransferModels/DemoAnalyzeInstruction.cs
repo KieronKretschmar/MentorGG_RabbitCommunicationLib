@@ -4,7 +4,9 @@ using System;
 
 namespace RabbitCommunicationLib.TransferModels
 {
-
+    /// <summary>
+    /// Instructions for DemoFileWorker to analyze a demo file.
+    /// </summary>
     public class DemoAnalyzeInstruction : TransferModel, IBlobUrl, IMatchId
     {
         /// <inheritdoc/>
