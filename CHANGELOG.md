@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Make DemoAnalysisBlock props nullable and default to null
 - Rename DemoObtainReport to DemoDownloadReport
 - Rename ManualDownloadReport to ManualDownloadInsertInstructions
+- Rename RedisLocalizationInstruction to MatchDatabaseInsertionInstruction
 
 ### Removed
 - Property DemoAnalyzeReport.FramesPerSecond
