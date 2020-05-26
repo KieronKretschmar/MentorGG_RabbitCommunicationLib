@@ -2,7 +2,7 @@
 
 namespace RabbitCommunicationLib.TransferModels
 {
-    public class DemoObtainReport : TransferModel, IBlobUrl, IMatchId
+    public class DemoDownloadReport : TransferModel, IBlobUrl, IMatchId
     {
         public long MatchId { get; set; }
 
