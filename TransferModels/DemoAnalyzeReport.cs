@@ -15,16 +15,6 @@ namespace RabbitCommunicationLib.TransferModels
         public DemoAnalysisBlock? Block { get; set; }
 
         /// <summary>
-        /// Redis key to locate the resource.
-        /// </summary>
-        public string RedisKey { get; set; }
-
-        /// <summary>
-        /// Date of expiry for this resource.
-        /// </summary>
-        public DateTime ExpiryDate { get; set; }
-
-        /// <summary>
         /// Unique identifier of the Demo.
         /// </summary>
         public string Hash { get; set; }
