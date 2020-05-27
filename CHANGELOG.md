@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.1] - 2020-05-26
 ##Added
+- DemoAnalysisBlock values for MatchWriter
+
+## [1.0.1] - 2020-05-26
+##Added
 - SituationExtractionInstruction
 
 ## [1.0.0] - 2020-05-26

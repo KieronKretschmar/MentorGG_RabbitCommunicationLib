@@ -59,10 +59,33 @@ namespace RabbitCommunicationLib.Enums
         RedisStorage = 2070,
         #endregion
 
+        #region MatchWriter
         /// <summary>
         /// Indicates MatchWriter failed without a specified reason.
         /// </summary>
-        UnknownMatchWriter = 3000,
+        MatchWriter_Unknown = 3000,
+
+        /// <summary>
+        /// Indicates MatchWriter failed because the MatchDataSet was not available.
+        /// </summary>
+        MatchWriter_MatchDataSetUnavailable = 3010,
+
+        /// <summary>
+        /// Indicates MatchWriter failed because the MatchDataSet was found in redis, but accessing it failed.
+        /// </summary>
+        MatchWriter_RedisConnectionFailed = 3020,
+
+        /// <summary>
+        /// Indicates MatchWriter failed because of a TimeoutException.
+        /// </summary>
+        MatchWriter_Timeout = 3030,
+
+        /// <summary>
+        /// Indicates MatchWriter failed during upload, most likely because database constraints (e.g. ForeignKeys or non-nullable columns) weren't satisfied.
+        /// </summary>
+        MatchWriter_DatabaseUpload = 3040,
+
+        #endregion
 
         #region SituationOperator
         /// <summary>
