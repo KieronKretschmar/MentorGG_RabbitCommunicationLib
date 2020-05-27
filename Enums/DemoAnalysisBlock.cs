@@ -14,49 +14,49 @@ namespace RabbitCommunicationLib.Enums
         /// <summary>
         /// Indicates DemoDownloader failed without a specified reason.
         /// </summary>
-        UnknownDemoDownloader = 1000,
+        DemoDownloader_Unknown = 1000,
 
         #region DemoFileWorker
         
         /// <summary>
         /// Indicates DemoFileWorker failed without a specified reason.
         /// </summary>
-        UnknownDemoFileWorker = 2000,
+        DemoFileWorker_Unknown = 2000,
 
         /// <summary>
         /// Indicates the Blob Download failed.
         /// </summary>
-        BlobDownload = 2010,
+        DemoFileWorker_BlobDownload = 2010,
 
         /// <summary>
         /// Indicates Unzipping Failed.
         /// </summary>
-        Unzip = 2020,
+        DemoFileWorker_Unzip = 2020,
 
         /// <summary>
         /// Indicates Http Communication for checking the Demo Hash failed.
         /// </summary>
-        HttpHashCheck = 2030,
+        DemoFileWorker_HttpHashCheck = 2030,
 
         /// <summary>
         /// Indicates the Demo was a duplicate.
         /// </summary>
-        Duplicate = 2040,
+        DemoFileWorker_Duplicate = 2040,
 
         /// <summary>
         /// Indicates the Analyze step failed.
         /// </summary>
-        Analyze = 2050,
+        DemoFileWorker_Analyze = 2050,
 
         /// <summary>
         /// Indicates the Enrich step failed.
         /// </summary>
-        Enrich = 2060,
+        DemoFileWorker_Enrich = 2060,
 
         /// <summary>
         /// Indicates Storage to Redis failed.
         /// </summary>
-        RedisStorage = 2070,
+        DemoFileWorker_RedisStorage = 2070,
         #endregion
 
         #region MatchWriter
@@ -91,12 +91,12 @@ namespace RabbitCommunicationLib.Enums
         /// <summary>
         /// Indicates SituationOperator failed without a specified reason.
         /// </summary>
-        UnknownSituationOperator = 4000,
+        SituationOperator_Unknown = 4000,
 
         /// <summary>
         /// Indicates access of MatchDataSet failed
         /// </summary>
-        MatchDataSetAccess = 4010,
+        SituationOperator_MatchDataSetAccess = 4010,
 
         #endregion
     }

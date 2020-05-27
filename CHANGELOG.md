@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.1] - 2020-05-26
 ##Added
 - DemoAnalysisBlock values for MatchWriter
-
+### Changed
+- Naming convention for DemoAnalysisBlock values (values are now prefixed with "<ProcessName>_")
 ## [1.0.1] - 2020-05-26
 ##Added
 - SituationExtractionInstruction
