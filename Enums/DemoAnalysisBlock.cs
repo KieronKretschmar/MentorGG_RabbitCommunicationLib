@@ -76,7 +76,7 @@ namespace RabbitCommunicationLib.Enums
         MatchWriter_RedisConnectionFailed = 3020,
 
         /// <summary>
-        /// Indicates MatchWriter failed because of a TimeoutException.
+        /// Indicates MatchWriter failed because of a TimeoutException, mostly caused by the database or redis connection timing out.
         /// </summary>
         MatchWriter_Timeout = 3030,
 
