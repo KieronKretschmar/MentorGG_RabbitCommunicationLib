@@ -16,6 +16,11 @@ namespace RabbitCommunicationLib.Enums
         /// </summary>
         DemoDownloader_Unknown = 1000,
 
+        /// <summary>
+        /// Indicates Demo is expected to be deleted from Valve servers because it is too old (2 weeks).
+        /// </summary>
+        DemoDownloader_TooOld = 1010,
+
         #region DemoFileWorker
         
         /// <summary>
