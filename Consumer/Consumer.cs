@@ -26,7 +26,7 @@ namespace RabbitCommunicationLib.Consumer
         private readonly IQueueConnection _queueConnection;
 
         /// <summary>
-        /// PrefetchCount + 1 = Number of messages that are consumed simultaneously
+        /// PrefetchCount = Number of messages that are consumed simultaneously
         /// </summary>
         private readonly ushort _prefetchCount;
 
